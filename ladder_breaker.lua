@@ -390,6 +390,23 @@ PlayerTab:AddTextbox({
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Jumpp
 	end	  
 })
+--бесконечни прыжок
+PlayerTab:AddToggle({
+        Name = "Infinite jumps",
+        Default = false,
+        Callback = function(Value)
+            if Value then
+                infJump = true
+                game:GetService("UserInputService").JumpRequest:Connect(function()
+                    if infJump then
+                        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+                    end
+                end)
+            else
+                infJump = false
+            end
+        end
+    })
 
 PlayerTab:AddTextbox({
 	Name = "gravity",
