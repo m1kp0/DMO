@@ -476,6 +476,20 @@ ScriptTab:AddButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MariyaFurmanova/Library/main/dex2.0", true))()
   	end    
 })
+--адвансед грабс
+ScriptTab:AddButton({
+	Name = "Advanced grabs [fling things and people] (by that script dev)",
+	Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/m1kp0/ftap/refs/heads/main/advanced_grabs_by_m1kpe0.lua'))()
+  	end    
+})
+--телепорт к домам
+ScriptTab:AddButton({
+	Name = "simple teleport [fling things and people] (by that script dev)",
+	Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/m1kp0/ftap/refs/heads/main/simple_teleport_to_all_houses.lua'))()
+  	end    
+})
 
 --время
 local ClockTab = Window:MakeTab({
