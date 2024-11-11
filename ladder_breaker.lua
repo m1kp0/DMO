@@ -393,7 +393,7 @@ AATab:AddToggle({
 	end    
 })
 
-Tab:AddButton({
+AATab:AddButton({
 	Name = "anti bang (press if someone bangs you)",
 	Callback = function(Value)
 		local positionOld
