@@ -9,6 +9,7 @@ local AmountOfPlayers
 local AllPlayers
 local TimeOfExecutedLB = 0
 local Players = game:GetService('Players')
+local FlnPrtsDstrHght = game.Workspace.FallenPartsDestroyHeight
 
 --валуес
 _G.breakLadder = true
@@ -228,6 +229,7 @@ local MainTab = Window:MakeTab({
 MainTab:AddToggle({
 	Name = "break ladder",
 	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		_G.breakLadder = Value
         brkLdr()
@@ -238,6 +240,7 @@ MainTab:AddToggle({
 MainTab:AddToggle({
 	Name = "break ladder (more)",
 	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		_G.breakrfullLadder = Value
         brkldrfull()
@@ -352,7 +355,7 @@ TPTab:AddButton({
 })
 --анти админ
 local AATab = Window:MakeTab({
-	Name = "anti-admin",
+	Name = "Defense",
         Image = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -363,6 +366,41 @@ AATab:AddButton({
 	Callback = function()
         game.Workspace.Camera.Blur:Destroy()
   	end    
+})
+
+AATab:AddToggle({
+	Name = "anti void",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value then
+			game:GetService('Workspace').FallenPartsDestroyHeight = -100000
+			while Value do
+				if game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -300 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
+					OrionLib:MakeNotification({
+						Name = "Theres a staarmaan waiting in the sky",
+						Content = "i will save you next time:3",
+						Image = "rbxassetid://18624604880",
+						Time = 5
+					})
+				end
+				wait()
+			end
+		else
+			game:GetService('Workspace').FallenPartsDestroyHeight = -100
+		end
+	end    
+})
+
+Tab:AddButton({
+	Name = "anti bang (press if someone bangs you)",
+	Callback = function(Value)
+		local positionOld
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, FlnPrtsDstrHght - 25, 0))
+		wait(0.3)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(positionOld)
+	end    
 })
 
 --игрок
@@ -390,23 +428,24 @@ PlayerTab:AddTextbox({
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Jumpp
 	end	  
 })
---бесконечни прыжок
+
 PlayerTab:AddToggle({
-        Name = "Infinite jumps",
-        Default = false,
-        Callback = function(Value)
-            if Value then
-                infJump = true
-                game:GetService("UserInputService").JumpRequest:Connect(function()
-                    if infJump then
-                        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-                    end
-                end)
-            else
-                infJump = false
-            end
-        end
-    })
+	Name = "infinite jumps",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value then
+			infJump = true
+			game:GetService("UserInputService").JumpRequest:Connect(function()
+				if infJump then
+					game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+				end
+			end)
+		else
+			infJump = false
+		end
+	end
+})
 
 PlayerTab:AddTextbox({
 	Name = "gravity",
@@ -438,6 +477,7 @@ PlayerTab:AddButton({
 PlayerTab:AddToggle({
 	Name = "glitch",
 	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(bruh)
 		_G.tpbug = bruh
         tpglitch()
@@ -491,20 +531,6 @@ ScriptTab:AddButton({
 	Name = "dex Explorer v2",
 	Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/MariyaFurmanova/Library/main/dex2.0", true))()
-  	end    
-})
---адвансед грабс
-ScriptTab:AddButton({
-	Name = "Advanced grabs [fling things and people] (by that script dev)",
-	Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/m1kp0/ftap/refs/heads/main/advanced_grabs_by_m1kpe0.lua'))()
-  	end    
-})
---телепорт к домам
-ScriptTab:AddButton({
-	Name = "simple teleport [fling things and people] (by that script dev)",
-	Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/m1kp0/ftap/refs/heads/main/simple_teleport_to_all_houses.lua'))()
   	end    
 })
 
@@ -568,6 +594,7 @@ Ctab:AddParagraph("v3.5, no more updates (maybe)","added working breaking ladder
 Ctab:AddParagraph("v3.6", "i remember the script lol. added server tab")
 Ctab:AddParagraph("v3.7", "переведено на Русский язык хвахвхпхвап")
 Ctab:AddParagraph("v3.8", "translated again - english; added: scripts from that script dev (scripts tab) infinite jump; changed: color of the gui")
+Ctab:AddParagraph("v3.9", "added: infinite jumps, anti-void, anti-bang; changed: anti-admin tab to defense tab")
 
 local Servertab = Window:MakeTab({
 	Name = "Server",
