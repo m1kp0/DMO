@@ -396,9 +396,10 @@ AATab:AddToggle({
 AATab:AddButton({
 	Name = "anti bang (press if someone bangs you)",
 	Callback = function(Value)
-		local positionOld
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, FlnPrtsDstrHght - 25, 0))
-		wait(0.3)
+		local positionOld = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		game:GetService('Workspace').FallenPartsDestroyHeight = -100000
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, game:GetService('Workspace').FallenPartsDestroyHeight + 3000, 0))
+		wait(1)
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(positionOld)
 	end    
 })
