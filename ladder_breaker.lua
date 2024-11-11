@@ -355,7 +355,7 @@ TPTab:AddButton({
 })
 --анти админ
 local AATab = Window:MakeTab({
-	Name = "Defense",
+	Name = "defense",
         Image = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -597,7 +597,7 @@ Ctab:AddParagraph("v3.8", "translated again - english; added: scripts from that 
 Ctab:AddParagraph("v3.9", "added: infinite jumps, anti-void, anti-bang; changed: anti-admin tab to defense tab")
 
 local Servertab = Window:MakeTab({
-	Name = "Server",
+	Name = "server",
         Image = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
