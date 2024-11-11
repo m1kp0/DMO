@@ -402,6 +402,7 @@ AATab:AddButton({
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, game:GetService('Workspace').FallenPartsDestroyHeight + 3000, 0))
 		wait(1)
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(positionOld)
+		game:GetService('Workspace').FallenPartsDestroyHeight = -100
 	end    
 })
 
