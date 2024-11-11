@@ -388,6 +388,7 @@ AATab:AddToggle({
 				wait()
 			end
 		else
+			Value = false
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100
 		end
 	end    
