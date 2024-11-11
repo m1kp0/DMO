@@ -10,8 +10,8 @@ local AllPlayers
 local TimeOfExecutedLB = 0
 local Players = game:GetService('Players')
 local FlnPrtsDstrHght = game.Workspace.FallenPartsDestroyHeight
+local antiVoidEnabled = false
 
---валуес
 _G.breakLadder = true
 _G.breakrfullLadder = true
 _G.brkspeed = brkspd
@@ -374,9 +374,10 @@ AATab:AddToggle({
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		if Value then
+			antiVoidEnabled = true
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100000
 			while Value do
-				if game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -300 then
+				while game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -500 and antiVoidEnabled do
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
 					OrionLib:MakeNotification({
 						Name = "Theres a staarmaan waiting in the sky",
@@ -384,11 +385,12 @@ AATab:AddToggle({
 						Image = "rbxassetid://18624604880",
 						Time = 5
 					})
+					wait()
 				end
 				wait()
 			end
 		else
-			Value = false
+			antiVoidEnabled = false
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100
 		end
 	end    
