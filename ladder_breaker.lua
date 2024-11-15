@@ -1,8 +1,8 @@
 --гуи
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/m1kp0/libraries/refs/heads/main/m1kpe0_orion_lib.lua')))()
-local Window = OrionLib:MakeWindow({Name = "Ladder Breaker | DMO", HidePremium = false, IntroEnabled = false, IntroText = "Loading..", SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "Ladder Breaker | DMO", HidePremium = false, Introenabled = false, IntroText = "Loading..", SaveConfig = true, ConfigFolder = "OrionTest"})
 
---локальные переменные
+--переменные
 local Player = game.Players.LocalPlayer
 local numberValue = Instance.new("NumberValue") 
 local AmountOfPlayers
@@ -10,13 +10,31 @@ local AllPlayers
 local TimeOfExecutedLB = 0
 local Players = game:GetService('Players')
 local FlnPrtsDstrHght = game.Workspace.FallenPartsDestroyHeight
-local antiVoidEnabled = false
+local antiVoidenabledSpy = false
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+local instance = (_G.chatSpyInstance or 0) + 1
+
+enabledSpy = false
+spyOnMyself = false
+public = false
+publicItalics = true
+
+privateProperties = {
+	Color = Color3.fromRGB(102,0,102); 
+	Font = Enum.Font.SourceSansBold;
+	TextSize = 18;
+}
 
 _G.breakLadder = true
 _G.breakrfullLadder = true
 _G.brkspeed = brkspd
 _G.clocktm = clktme
 _G.tpbug = true
+_G.chatSpyInstance = instance
 
 --функции ломания лестницы
 local function brkLdr()
@@ -200,11 +218,52 @@ end
 local function tpglitch()
 	while _G.tpbug == true do
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9999, 99999999, -9999)
-		wait()
+		wait(0.01)
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
-		wait()
+		wait(0.01)
 	end
 end
+--чят спай
+local function onChatted(p,msg)
+	if _G.chatSpyInstance == instance then
+		if p==player and msg:lower():sub(1,4)=="/spy" then
+			enabledSpy = not enabledSpy
+			wait(0.3)
+			privateProperties.Text = "{SPY "..(enabledSpy and "EN" or "DIS").."ABLED}"
+			StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+		elseif enabledSpy and (spyOnMyself==true or p~=player) then
+			msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+			local hidden = true
+			local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+				if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
+					hidden = false
+				end
+			end)
+			wait(1)
+			conn:Disconnect()
+			if hidden and enabledSpy then
+				if public then
+					saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.DisplayName .."]: "..msg,"All")
+				else
+					privateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
+					StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+				end
+			end
+		end
+	end
+end
+ 
+for _,p in ipairs(Players:GetPlayers()) do
+	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end
+Players.PlayerAdded:Connect(function(p)
+	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end)
+privateProperties.Text = "{SPY "..("EN").."ABLED}"
+StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+local chatFrame = player.PlayerGui.Chat.Frame
+chatFrame.ChatChannelParentFrame.Visible = true
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 
 --уведомление когда зашел креатор
 game.Players.PlayerAdded:Connect(function(plr)
@@ -269,6 +328,40 @@ MainTab:AddTextbox({
 	end	  
 })
 
+local ChatTab = Window:MakeTab({
+	Name = "chat",
+        Image = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+ChatTab:AddToggle({
+	Name = "chat spy",
+	Default = true,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "ChatSpyToggle",
+	Callback = function(Value)
+		if Value == true then
+			enabledSpy = true
+			spyOnMyself = true
+		else
+			enabledSpy = false
+			spyOnMyself = false
+		end
+	end    
+})
+
+ChatTab:AddToggle({
+	Name = "public chat spy",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value == true then
+			public = true
+		else
+			public = false
+		end
+	end    
+})
 --телепорт
 local TPTab = Window:MakeTab({
 	Name = "teleport",
@@ -374,10 +467,10 @@ AATab:AddToggle({
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		if Value then
-			antiVoidEnabled = true
+			antiVoidenabledSpy = true
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100000
 			while Value do
-				while game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -500 and antiVoidEnabled do
+				while game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -500 and antiVoidenabledSpy do
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
 					OrionLib:MakeNotification({
 						Name = "Theres a staarmaan waiting in the sky",
@@ -390,7 +483,7 @@ AATab:AddToggle({
 				wait()
 			end
 		else
-			antiVoidEnabled = false
+			antiVoidenabledSpy = false
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100
 		end
 	end    
@@ -399,11 +492,11 @@ AATab:AddToggle({
 AATab:AddButton({
 	Name = "anti bang (press if someone bangs you)",
 	Callback = function(Value)
-		local positionOld = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		local positionOld = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		game:GetService('Workspace').FallenPartsDestroyHeight = -1000
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, -100, 0))
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, game:GetService('Workspace').FallenPartsDestroyHeight + 999, 0))
 		wait(0.01)
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, -500, 0))
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(0, game:GetService('Workspace').FallenPartsDestroyHeight + 500, 0))
 		wait(0.8)
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(positionOld)
         game:GetService('Workspace').FallenPartsDestroyHeight = -100
