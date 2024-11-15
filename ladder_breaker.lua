@@ -10,13 +10,14 @@ local AllPlayers
 local TimeOfExecutedLB = 0
 local Players = game:GetService('Players')
 local FlnPrtsDstrHght = game.Workspace.FallenPartsDestroyHeight
-local antiVoidenabledSpy = false
+local antiVoidenabled = false
 local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
 local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
 local instance = (_G.chatSpyInstance or 0) + 1
+local antiSitEnabled = false
 
 enabledSpy = false
 spyOnMyself = false
@@ -259,7 +260,6 @@ end
 Players.PlayerAdded:Connect(function(p)
 	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
 end)
-privateProperties.Text = "{SPY "..("EN").."ABLED}"
 StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
 local chatFrame = player.PlayerGui.Chat.Frame
 chatFrame.ChatChannelParentFrame.Visible = true
@@ -338,7 +338,6 @@ ChatTab:AddToggle({
 	Name = "chat spy",
 	Default = true,
 	Color = Color3.fromRGB(102, 0, 102),
-	Flag = "ChatSpyToggle",
 	Callback = function(Value)
 		if Value == true then
 			enabledSpy = true
@@ -467,10 +466,10 @@ AATab:AddToggle({
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		if Value then
-			antiVoidenabledSpy = true
+			antiVoidenabled = true
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100000
 			while Value do
-				while game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -500 and antiVoidenabledSpy do
+				while game.Players.LocalPlayer.Character.HumanoidRootPart and game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < -500 and antiVoidenabled do
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
 					OrionLib:MakeNotification({
 						Name = "Theres a staarmaan waiting in the sky",
@@ -483,8 +482,26 @@ AATab:AddToggle({
 				wait()
 			end
 		else
-			antiVoidenabledSpy = false
+			antiVoidenabled = false
 			game:GetService('Workspace').FallenPartsDestroyHeight = -100
+		end
+	end    
+})
+
+AATab:AddToggle({
+	Name = "anti sit",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiSitToggle",
+	Callback = function(Value)
+		antiSitEnabled = Value
+		if antiSitEnabled then
+			while antiSitEnabled do
+				if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Sit == true then
+					game.Players.LocalPlayer.Character:FindFirstChild("Humanoid").Sit = false
+				end
+			wait()
+			end
 		end
 	end    
 })
@@ -563,6 +580,22 @@ PlayerTab:AddTextbox({
 	Callback = function(fov)
 		game.Workspace.Camera.FieldOfView = fov
 	end	  
+})
+
+PlayerTab:AddButton({
+	Name = "sit",
+	Callback = function()
+		game.Players.LocalPlayer.Character.Humanoid.Sit = true
+		wait(0.01)
+		if OrionLib.Flags["AntiSitToggle"].Value == true then
+			OrionLib:MakeNotification({
+				Name = "you need to disable the anti sit",
+				Content = "you cant sit with enabled anti sit",
+				Image = "rbxassetid://18624604880",
+				Time = 5
+			})
+		end
+  	end    
 })
 
 --кнопка р6 аватар
@@ -694,7 +727,7 @@ Ctab:AddParagraph("v3.5, no more updates (maybe)","added working breaking ladder
 Ctab:AddParagraph("v3.6", "i remember the script lol. added server tab")
 Ctab:AddParagraph("v3.7", "переведено на Русский язык хвахвхпхвап")
 Ctab:AddParagraph("v3.8", "translated again - english; added: scripts from that script dev (scripts tab) infinite jump; changed: color of the gui")
-Ctab:AddParagraph("v3.9", "added: infinite jumps, anti-void, anti-bang; changed: anti-admin tab to defense tab")
+Ctab:AddParagraph("v3.9", "added: infinite jumps, anti-void, anti-bang, chat spy, public chat spy, anti sit, sit button; changed: anti-admin tab to defense tab")
 
 local Servertab = Window:MakeTab({
 	Name = "server",
