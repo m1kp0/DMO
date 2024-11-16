@@ -14,6 +14,7 @@ local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSys
 local instance = (_G.chatSpyInstance or 0) + 1
 local antiSitEnabled = false
 c = game.Players.LocalPlayer.Character.HumanoidRootPart
+local antiBlurEnabled = false
 
 enabledSpy = false
 spyOnMyself = false
@@ -34,7 +35,7 @@ _G.tpbug = true
 _G.chatSpyInstance = instance
 
 local function brkLdr()
-	while _G.breakLadder == true do
+   while _G.breakLadder == true do
         c.CFrame = CFrame.new(88, 141, -237)
         wait(_G.brkspeed)
         c.CFrame = CFrame.new(90, 140, -234)
@@ -295,7 +296,7 @@ MainTab:AddButton({
 })
 
 MainTab:AddTextbox({
-	Name = "delay (break ladder)",
+	Name = "delay (breaking ladder)",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(brkspd)
@@ -334,90 +335,98 @@ ChatTab:AddToggle({
 TPTab:AddButton({
 	Name = "spawn",
 	Callback = function()
-        c.CFrame = CFrame.new(91, 3, -26)
+        	c.CFrame = CFrame.new(91, 3, -26)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "top of the ladder",
 	Callback = function()
-        c.CFrame = CFrame.new(80, 147, -247)
+        	c.CFrame = CFrame.new(80, 147, -247)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "bottom of the ladder",
 	Callback = function()
-        c.CFrame = CFrame.new(93, 3, -232)
+        	c.CFrame = CFrame.new(93, 3, -232)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "green zone",
 	Callback = function()
-        c.CFrame = CFrame.new(70, 100, -469)
+        	c.CFrame = CFrame.new(70, 100, -469)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "yellow zone",
 	Callback = function()
-        c.CFrame = CFrame.new(41, 106, -775)
+        	c.CFrame = CFrame.new(41, 106, -775)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "pink zone",
 	Callback = function()
-        c.CFrame = CFrame.new(3, 188, -1188)
+        	c.CFrame = CFrame.new(3, 188, -1188)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "purple zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-25, 192, -1534)
+        	c.CFrame = CFrame.new(-25, 192, -1534)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "orange zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-82, 282, -1824)
+       		c.CFrame = CFrame.new(-82, 282, -1824)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "dark-yellow zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-122, 264, -2145)
+        	c.CFrame = CFrame.new(-122, 264, -2145)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "blue zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-204, 264, -2620)
+        	c.CFrame = CFrame.new(-204, 264, -2620)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "end",
 	Callback = function()
-        c.CFrame = CFrame.new(-238, 265, -2809)
-  	end    
-})
-
-DefenseTab:AddButton({
-	Name = "delete blur",
-	Callback = function()
-        game.Workspace.Camera.Blur:Destroy()
+        	c.CFrame = CFrame.new(-238, 265, -2809)
   	end    
 })
 
 DefenseTab:AddToggle({
+	Name = "anti blur",
+	Default = true,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		antiSitEnabled = Value 
+			if antiSitEnabled then
+				game.Camera.Blur.Enabled = false
+			else
+				game.Camera.Blur.Enabled = true
+			end
+		end
+	end
+})
+
+DefenseTab:AddToggle({
 	Name = "anti void",
-	Default = false,
+	Default = true,
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		if Value then
@@ -446,7 +455,7 @@ DefenseTab:AddToggle({
 
 DefenseTab:AddToggle({
 	Name = "anti sit",
-	Default = false,
+	Default = true,
 	Color = Color3.fromRGB(102, 0, 102),
 	Flag = "AntiSitToggle",
 	Callback = function(Value)
