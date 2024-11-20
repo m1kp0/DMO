@@ -14,6 +14,7 @@ local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSys
 local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
 local instance = (_G.chatSpyInstance or 0) + 1
 local antiSitEnabled = false
+local antiWarpEnabled = false
 c = game.Players.LocalPlayer.Character.HumanoidRootPart
 
 enabledSpy = false
@@ -463,6 +464,22 @@ DefenseTab:AddToggle({
 	end    
 })
 
+DefenseTab:AddToggle({
+	Name = "anti warp",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiWarpToggle",
+	Callback = function(Value)
+		antiWarpEnabled = Value
+		if antiWarpEnabled then
+			while antiWarpEnabled do
+				game.Camera.FieldOfView = 70
+			wait()
+			end
+		end
+	end    
+})
+
 PlayerTab:AddTextbox({
 	Name = "speed",
 	Default = "",
@@ -538,20 +555,6 @@ PlayerTab:AddButton({
 	Callback = function()
 		loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-R6-Animations-on-R15-16865"))("t.me/arceusxscripts")
   	end    
-})
-
-PlayerTab:AddToggle({
-	Name = "glitch",
-	Default = false,
-	Color = Color3.fromRGB(102, 0, 102),
-	Callback = function(Value)
-        while Value == true do
-			c.CFrame = CFrame.new(9999, 99999999, -9999)
-			wait(0.01)
-			c.CFrame = CFrame.new(80, 147, -247)
-			wait(0.01)
-		end
-	end    
 })
 
 PlayerTab:AddParagraph("defaults","| speed - 16 | jump power - 50 | gravity - 200 | field of view- 70 |")
