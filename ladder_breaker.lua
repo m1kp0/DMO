@@ -287,16 +287,8 @@ MainTab:AddToggle({
 	end    
 })
 
-MainTab:AddButton({
-	Name = "grab all stairs",
-	Callback = function()
-        for i, parts in pairs(workspace.Stairs:GetChildren()) do 
-			if parts:IsA "Part" then 
-				parts.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart 
-			end 
-		end
-  	end    
-})
+OrionLib:AddParagraph("человеку с ником sapfir посвящается...", "ВКЛЮЧАЙТЕ ОДИН BREAK LADDER, ЛЮБОЙ НО ОДИН, ЕСлИ ВКЛЮЧИТЬ ОБА ТО ОН БУДЕТ ОЧень МАЛО ЛОМАТЬ!!!! а еще желательно включить fly и fling из инфините уиледа")
+OrionLib:AddLabel("лучший delay: 0.06 либо 0.07")
 
 MainTab:AddTextbox({
 	Name = "delay (break ladder)",
