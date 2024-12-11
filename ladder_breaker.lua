@@ -15,7 +15,8 @@ local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSys
 local instance = (_G.chatSpyInstance or 0) + 1
 local antiSitEnabled = false
 local antiWarpEnabled = false
-c = game.Players.LocalPlayer.Character.HumanoidRootPart
+local UIS = game:GetService("UserInputService")
+
 
 enabledSpy = false
 spyOnMyself = false
@@ -23,7 +24,7 @@ public = false
 publicItalics = true
 
 privateProperties = {
-	Color = Color3.fromRGB(102,0,102); 
+	Color = Color3.fromRGB(132,0,132); 
 	Font = Enum.Font.SourceSansBold;
 	TextSize = 18;
 }
@@ -37,177 +38,177 @@ _G.chatSpyInstance = instance
 
 local function brkLdr()
 	while _G.breakLadder == true do
-        c.CFrame = CFrame.new(88, 141, -237)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(88, 141, -237)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(90, 140, -234)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(90, 140, -234)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(92, 137, -231)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(92, 137, -231)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(94, 136, -230)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(94, 136, -230)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(95, 135, -228)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(95, 135, -228)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(97, 134, -226)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(97, 134, -226)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(100, 132, -224)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100, 132, -224)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(105, 129, -226)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(105, 129, -226)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(109, 127, -228)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(109, 127, -228)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(111, 125, -227)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(111, 125, -227)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(113, 124, -226)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(113, 124, -226)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(115, 123, -226)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(115, 123, -226)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(118, 122, -227)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(118, 122, -227)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(118, 121, -228)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(118, 121, -228)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(120, 120, -229)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120, 120, -229)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(123, 118, -232)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 118, -232)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(125, 116, -234)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 116, -234)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(126, 114, -237)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(126, 114, -237)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(125, 113, -239)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 113, -239)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(125, 112, -241)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 112, -241)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(125, 112, -244)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 112, -244)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(124, 111, -247)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 111, -247)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(124, 109, -250)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 109, -250)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(123, 107, -253)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 107, -253)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(123, 105, -256)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 105, -256)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(121, 103, -259)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(121, 103, -259)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(120, 101, -261)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120, 101, -261)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(117, 99, -264)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(117, 99, -264)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(115, 97, -265)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(115, 97, -265)
         wait(_G.brkspeed)
-        c.CFrame = CFrame.new(113, 95, -265)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(113, 95, -265)
         wait(_G.brkspeed)
     end
 end
 local function brkldrfull()
 	while _G.breakrfullLadder == true do
-		c.CFrame = CFrame.new(88, 141, -237)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(88, 141, -237)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(90, 140, -234)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(90, 140, -234)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(92, 137, -231)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(92, 137, -231)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(94, 136, -230)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(94, 136, -230)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(95, 135, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(95, 135, -228)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(97, 134, -226)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(97, 134, -226)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(100, 132, -224)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100, 132, -224)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(105, 129, -226)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(105, 129, -226)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(109, 127, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(109, 127, -228)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(111, 125, -227)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(111, 125, -227)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(113, 124, -226)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(113, 124, -226)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(115, 123, -226)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(115, 123, -226)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(118, 122, -227)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(118, 122, -227)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(118, 121, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(118, 121, -228)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(120, 120, -229)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120, 120, -229)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(123, 118, -232)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 118, -232)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(125, 116, -234)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 116, -234)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(126, 114, -237)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(126, 114, -237)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(125, 113, -239)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 113, -239)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(125, 112, -241)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 112, -241)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(125, 112, -244)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(125, 112, -244)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(124, 111, -247)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 111, -247)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(124, 109, -250)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 109, -250)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(123, 107, -253)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 107, -253)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(123, 105, -256)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(123, 105, -256)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(121, 103, -259)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(121, 103, -259)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(120, 101, -261)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120, 101, -261)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(117, 99, -264)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(117, 99, -264)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(115, 97, -265)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(115, 97, -265)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(113, 95, -265)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(113, 95, -265)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(110, 93, -265)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(110, 93, -265)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(108, 92, -265)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(108, 92, -265)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(105, 90, -264)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(105, 90, -264)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(102, 88, -264)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(102, 88, -264)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(98, 86, -263)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(98, 86, -263)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(95, 84, -262)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(95, 84, -262)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(91, 82, -259)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(91, 82, -259)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 78, -256)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 78, -256)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 76, -253)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 76, -253)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 74, -250)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 74, -250)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 74, -247)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 74, -247)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 73, -244)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 73, -244)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 71, -240)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 71, -240)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(89, 70, -237)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(89, 70, -237)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(90, 68, -234)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(90, 68, -234)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(91, 67, -231)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(91, 67, -231)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(94, 66, -230)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(94, 66, -230)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(96, 64, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(96, 64, -228)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(99, 62, -226)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(99, 62, -226)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(103, 60, -227)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(103, 60, -227)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(107, 57, -227)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(107, 57, -227)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(111, 55, -227)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(111, 55, -227)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(114, 53, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(114, 53, -228)
 		wait(_G.brkspeed)
-		c.CFrame = CFrame.new(118, 50, -228)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(118, 50, -228)
 		wait(_G.brkspeed)
 	end
 end
@@ -255,6 +256,7 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/m1kp0/libraries/refs/heads/main/m1kpe0_orion_lib.lua')))()
 local Window = OrionLib:MakeWindow({Name = "Ladder Breaker | DMO", HidePremium = false, IntroEnabled = false, IntroText = "Loading..", SaveConfig = true, ConfigFolder = "OrionTest"})
 
+
 local MainTab = Window:MakeTab({Name = "main", Icon = "", PremiumOnly = false})
 local ChatTab = Window:MakeTab({Name = "chat", Image = "", PremiumOnly = false})
 local TPTab = Window:MakeTab({Name = "teleport", Image = "", PremiumOnly = false})
@@ -290,7 +292,7 @@ MainTab:AddButton({
 	Callback = function()
         for i, parts in pairs(workspace.Stairs:GetChildren()) do 
 			if parts:IsA "Part" then 
-				parts.CFrame = c 
+				parts.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart 
 			end 
 		end
   	end    
@@ -312,7 +314,7 @@ ChatTab:AddToggle({
 	Callback = function(Value)
 		if Value == true then
 			enabledSpy = true
-			spyOnMyself = true
+			spyOnMyself = false
 		else
 			enabledSpy = false
 			spyOnMyself = false
@@ -336,77 +338,77 @@ ChatTab:AddToggle({
 TPTab:AddButton({
 	Name = "spawn",
 	Callback = function()
-        c.CFrame = CFrame.new(91, 3, -26)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(91, 3, -26)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "top of the ladder",
 	Callback = function()
-        c.CFrame = CFrame.new(80, 147, -247)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(80, 147, -247)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "bottom of the ladder",
 	Callback = function()
-        c.CFrame = CFrame.new(93, 3, -232)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(93, 3, -232)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "green zone",
 	Callback = function()
-        c.CFrame = CFrame.new(70, 100, -469)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(70, 100, -469)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "yellow zone",
 	Callback = function()
-        c.CFrame = CFrame.new(41, 106, -775)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(41, 106, -775)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "pink zone",
 	Callback = function()
-        c.CFrame = CFrame.new(3, 188, -1188)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3, 188, -1188)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "purple zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-25, 192, -1534)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-25, 192, -1534)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "orange zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-82, 282, -1824)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-82, 282, -1824)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "dark-yellow zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-122, 264, -2145)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-122, 264, -2145)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "blue zone",
 	Callback = function()
-        c.CFrame = CFrame.new(-204, 264, -2620)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-204, 264, -2620)
   	end    
 })
 
 TPTab:AddButton({
 	Name = "end",
 	Callback = function()
-        c.CFrame = CFrame.new(-238, 265, -2809)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-238, 265, -2809)
   	end    
 })
 
@@ -473,7 +475,9 @@ DefenseTab:AddToggle({
 		antiWarpEnabled = Value
 		if antiWarpEnabled then
 			while antiWarpEnabled do
-				game.Camera.FieldOfView = 70
+				if game.Workspace.Camera.FieldOfView < 70 or game.Workspace.Camera.FieldOfView > 70 then
+					game.Workspace.Camera.FieldOfView = 70
+				end
 			wait()
 			end
 		end
@@ -636,6 +640,7 @@ Ctab:AddParagraph("v3.5, no more updates (maybe)","added working breaking ladder
 Ctab:AddParagraph("v3.6", "i remember the script lol. added server tab")
 Ctab:AddParagraph("v3.7", "translated again - english; added: infinite jump; changed: color of the gui")
 Ctab:AddParagraph("v3.8", "added: infinite jumps, anti-void, chat spy, public chat spy, anti sit, sit button; changed: renamed anti-admin tab to defense tab")
+Ctab:AddParagraph("v3.9", "fixed break ladder and teleport after reset")
 
 AmountOfPlayers = #Players:GetPlayers()
 AllPlayers = #Players:GetPlayers()
@@ -668,6 +673,17 @@ while true do
 		minutesOfExecutedLB = minutesOfExecutedLB + 1
 		TimeOfExecutedLB = 0
 		wait()
+	end
+	if minutesOfExecutedLB >= 60 then
+		for i = 1, 10 do
+			OrionLib:MakeNotification({
+				Name = "пора заканчивать",
+				Content = ""..Player.DisplayName..", ты тут больше часа!!1!",
+				Image = "rbxassetid://4483345998",
+				Time = 10
+			})
+			wait()
+		end
 	end
 end
 
