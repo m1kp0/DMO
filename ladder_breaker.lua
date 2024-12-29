@@ -16,6 +16,7 @@ local instance = (_G.chatSpyInstance or 0) + 1
 local antiSitEnabled = false
 local antiWarpEnabled = false
 local UIS = game:GetService("UserInputService")
+local chatBypassEn
 
 
 
@@ -262,6 +263,19 @@ local chatFrame = player.PlayerGui.Chat.Frame
 chatFrame.ChatChannelParentFrame.Visible = true
 chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 
+local function chatBypass()
+	while chatBypassEn do
+		game:GetService("Players"):Chat("le le le le le le le")
+		wait(1)
+		game:GetService("Players"):Chat("le le le le le le")
+		wait(1)
+		game:GetService("Players"):Chat("le le le le le le le le")
+		wait(1)
+		game:GetService("Players"):Chat("le le le le le")
+		wait(1)
+	end
+end
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/m1kp0/libraries/refs/heads/main/m1kpe0_orion_lib.lua')))()
 local Window = OrionLib:MakeWindow({Name = "Ladder Breaker | DMO", HidePremium = false, IntroEnabled = false, IntroText = "Loading..", SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -341,39 +355,22 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local lelele
 ChatTab:AddTextbox({
-	Name = "chat bypass (пиши сюда - бана не будет)",
+	Name = "chat (пиши сюда - бана не будет)",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(messageToSay)
-		if lelele then
-			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(messageToSay.." le le le le le le le", "All")
-		else
-			ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(messageToSay, "All")
-		end
+		
 	end	  
 })
 
 ChatTab:AddToggle({
-	Name = "chat bypass - добавлять le le le к сообщениям",
+	Name = "chat bypass",
 	Default = false,
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
-		lelele = Value
+		chatBypassEn = Value
+		chatBypass()
 	end    
-})
-
-ChatTab:AddButton({
-	Name = "послать жестко нахуй",
-	Callback = function()
-        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("le le le le le съебись нахуй пиздоблядина ебаная я твоей шлюхоматери обе гнилых дыры своим богоподобным хуем драил le le le le le le", "All")
-  	end    
-})
-
-ChatTab:AddButton({
-	Name = "послать еще раз",
-	Callback = function()
-        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("le le le le le я тебе сказал блять съебался в страхе отсюда хуесосина ато пизда тебе аутисту le le le le le le", "All")
-  	end    
 })
 
 TPTab:AddButton({
@@ -523,6 +520,23 @@ DefenseTab:AddToggle({
 			end
 		end
 	end    
+})
+
+DefenseTab:AddButton({
+	Name = "drop dolce milk (inventory)",
+	Callback = function()
+		local tool = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+		if tool then
+			tool.Parent = workspace
+		else
+			OrionLib:MakeNotification({
+				Name = "возьми дольче милк",
+				Content = "в руки",
+				Image = "rbxassetid://18624604880",
+				Time = 5
+			})
+		end
+	end
 })
 
 local SavedCheckpoint
@@ -708,7 +722,9 @@ ClockTab:AddTextbox({
 	end	  
 })
 
-Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сообщения не забанят), auto-add lelele (chat tab), послать жестко нахуй, послать еще раз; save checkpoint, delete checkpoint (defense tab); hour (server tab); cleared: changelog tab; поменял местами name и display name (server tab); inf zoom distance (character tab); fixed: теперь минута прибавляется каждые 59 а не 60 секунд (server tab)")
+Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сообщения не забанят), auto-add lelele (chat tab), послать жестко нахуй, послать еще раз; save checkpoint, delete checkpoint (defense tab); hour (server tab); inf zoom distance (character tab); cleared: changelog tab; поменял местами name и display name (server tab); fixed: теперь минута прибавляется каждые 59 а не 60 секунд (server tab)")
+Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
+
 
 AmountOfPlayers = #Players:GetPlayers()
 AllPlayers = #Players:GetPlayers()
