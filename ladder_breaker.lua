@@ -1,3 +1,4 @@
+--@Deletedaccoun926 писюн саси
 local Player = game.Players.LocalPlayer
 local numberValue = Instance.new("NumberValue") 
 local AmountOfPlayers
