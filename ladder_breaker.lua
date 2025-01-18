@@ -544,7 +544,7 @@ DefenseTab:AddToggle({
 	end    
 })
 
-MainTab:AddToggle({
+DefenseTab:AddToggle({
 	Name = "create my ladder",
 	Default = false,
 	Color = Color3.fromRGB(102, 0, 102),
