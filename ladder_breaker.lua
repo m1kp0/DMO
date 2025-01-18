@@ -311,6 +311,35 @@ MainTab:AddTextbox({
 	end	  
 })
 
+MainTab:AddToggle({
+	Name = "create my ladder",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value then
+			for i, p in pairs(workspace.Stairs:GetDescendants()) do
+				if p:IsA("Part") then
+					local k = Instance.new("Part", workspace)
+					k.Position = p.Position
+					k.Anchored = true
+					k.CFrame = p.CFrame
+					k.Size = p.Size
+					k.Name = "LB-Ladder"
+					k.Color = p.Color
+					k.BrickColor = p.BrickColor
+					k.Transparency = 0.5
+				end
+			end
+		else
+			for i, p in pairs(workspace:GetDescendants()) do
+				if p.Name == "LB-Ladder" then
+					p:Destroy()
+				end
+			end
+		end
+	end    
+})
+
 --chat tab
 ChatTab:AddToggle({
 	Name = "chat spy",
