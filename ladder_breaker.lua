@@ -311,35 +311,6 @@ MainTab:AddTextbox({
 	end	  
 })
 
-MainTab:AddToggle({
-	Name = "create my ladder",
-	Default = false,
-	Color = Color3.fromRGB(102, 0, 102),
-	Callback = function(Value)
-		if Value then
-			for i, p in pairs(workspace.Stairs:GetDescendants()) do
-				if p:IsA("Part") then
-					local k = Instance.new("Part", workspace)
-					k.Position = p.Position
-					k.Anchored = true
-					k.CFrame = p.CFrame
-					k.Size = p.Size
-					k.Name = "LB-Ladder"
-					k.Color = p.Color
-					k.BrickColor = p.BrickColor
-					k.Transparency = 0.5
-				end
-			end
-		else
-			for i, p in pairs(workspace:GetDescendants()) do
-				if p.Name == "LB-Ladder" then
-					p:Destroy()
-				end
-			end
-		end
-	end    
-})
-
 --chat tab
 ChatTab:AddToggle({
 	Name = "chat spy",
@@ -482,12 +453,67 @@ TPTab:AddButton({
 })
 
 --defense tab
+DefenseTab:AddSection({Name = "anti-admin"})
+
 DefenseTab:AddButton({
 	Name = "delete blur",
 	Callback = function()
         workspace.Camera.Blur:Destroy()
   	end    
 })
+
+
+DefenseTab:AddButton({
+	Name = "anti kill-parts",
+	Callback = function()
+		for i, p in pairs(workspace.Damage:GetDescendants()) do
+			if p.Name == "TouchInterest" then
+				p:Destroy()
+			end
+		end
+	end    
+})
+
+DefenseTab:AddToggle({
+	Name = "anti warp",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiWarpToggle",
+	Callback = function(Value)
+		antiWarpEnabled = Value
+		if antiWarpEnabled then
+			while antiWarpEnabled do
+				if workspace.Camera.FieldOfView < 70 or workspace.Camera.FieldOfView > 70 then
+					workspace.Camera.FieldOfView = 70
+				end
+			wait()
+			end
+		end
+	end    
+})
+
+DefenseTab:AddToggle({
+	Name = "anti sit",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiSitToggle",
+	Callback = function(Value)
+		antiSitEnabled = Value
+		if antiSitEnabled then
+			while antiSitEnabled do
+				if Player.Character:FindFirstChild("Humanoid").Sit == true then
+					Player.Character:FindFirstChild("Humanoid").Sit = false
+					if workspace.Sit.TouchInterest then
+						workspace.Sit.TouchInterest:Destroy()
+					end
+				end
+			wait()
+			end
+		end
+	end    
+})
+
+DefenseTab:AddSection({Name = "advanced"})
 
 DefenseTab:AddToggle({
 	Name = "anti void",
@@ -518,57 +544,33 @@ DefenseTab:AddToggle({
 	end    
 })
 
-DefenseTab:AddToggle({
-	Name = "anti sit",
+MainTab:AddToggle({
+	Name = "create my ladder",
 	Default = false,
 	Color = Color3.fromRGB(102, 0, 102),
-	Flag = "AntiSitToggle",
 	Callback = function(Value)
-		antiSitEnabled = Value
-		if antiSitEnabled then
-			while antiSitEnabled do
-				if Player.Character:FindFirstChild("Humanoid").Sit == true then
-					Player.Character:FindFirstChild("Humanoid").Sit = false
+		if Value then
+			for i, p in pairs(workspace.Stairs:GetDescendants()) do
+				if p:IsA("Part") then
+					local k = Instance.new("Part", workspace)
+					k.Position = p.Position
+					k.Anchored = true
+					k.CFrame = p.CFrame
+					k.Size = p.Size
+					k.Name = "LB-Ladder"
+					k.Color = p.Color
+					k.BrickColor = p.BrickColor
+					k.Transparency = 0.5
 				end
-			wait()
 			end
-		end
-	end    
-})
-
-DefenseTab:AddToggle({
-	Name = "anti warp",
-	Default = false,
-	Color = Color3.fromRGB(102, 0, 102),
-	Flag = "AntiWarpToggle",
-	Callback = function(Value)
-		antiWarpEnabled = Value
-		if antiWarpEnabled then
-			while antiWarpEnabled do
-				if workspace.Camera.FieldOfView < 70 or workspace.Camera.FieldOfView > 70 then
-					workspace.Camera.FieldOfView = 70
-				end
-			wait()
-			end
-		end
-	end    
-})
-
-DefenseTab:AddButton({
-	Name = "drop dolce milk (inventory)",
-	Callback = function()
-		local tool = Player.Character:FindFirstChildWhichIsA("Tool")
-		if tool then
-			tool.Parent = workspace
 		else
-			OrionLib:MakeNotification({
-				Name = "возьми дольче милк",
-				Content = "в руки",
-				Image = "rbxassetid://18624604880",
-				Time = 5
-			})
+			for i, p in pairs(workspace:GetDescendants()) do
+				if p.Name == "LB-Ladder" then
+					p:Destroy()
+				end
+			end
 		end
-	end
+	end    
 })
 
 DefenseTab:AddButton({
@@ -589,6 +591,22 @@ DefenseTab:AddButton({
   	end    
 })
 
+DefenseTab:AddButton({
+	Name = "drop dolce milk (inventory)",
+	Callback = function()
+		local tool = Player.Character:FindFirstChildWhichIsA("Tool")
+		if tool then
+			tool.Parent = workspace
+		else
+			OrionLib:MakeNotification({
+				Name = "возьми дольче милк",
+				Content = "в руки",
+				Image = "rbxassetid://18624604880",
+				Time = 5
+			})
+		end
+	end
+})
 --character settings tab
 PlayerTab:AddTextbox({
 	Name = "speed",
@@ -760,6 +778,7 @@ ClockTab:AddTextbox({
 Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сообщения не забанят), chat bypass, послать жестко нахуй, послать еще раз; save checkpoint, delete checkpoint (defense tab); hour (server tab); inf zoom distance (character tab); cleared: changelog tab; поменял местами name и display name (server tab); fixed: теперь минута прибавляется каждые 59 а не 60 секунд (server tab)")
 Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
 Ctab:AddParagraph("v4.2", "haha nice чистый код скрипта; added spy on myself (chat tab)")
+Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti sit; updated defense tab")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
