@@ -385,7 +385,7 @@ ChatTab:AddToggle({
 ChatTab:AddSection({Name = "advanced"})
 
 ChatTab:AddTextbox({
-	Name = "chat (пиши сюда - бана не будет)",
+	Name = "chat",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(messageToSay)
