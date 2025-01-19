@@ -620,6 +620,7 @@ DefenseTab:AddToggle({
 	Callback = function(Value)
 		autoDropDolce = Value
 		while autoDropDolce do
+			wait()
 			local tool = game.Players.LocalPlayer.Character:FindFirstChild("Dolce Milk")
 			if tool and autoDropDolce then
 				tool.Parent = workspace
