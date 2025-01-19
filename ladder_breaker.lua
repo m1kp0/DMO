@@ -258,9 +258,9 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 
 local function chatBypass()
 	while chatBypassEn do
-		game:GetService("Players"):Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+		game:GetService("Players"):Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE le le le")
 		wait(1)
-		game:GetService("Players"):Chat("/e ABC")
+		game:GetService("Players"):Chat("/e ABC le le le le le le le le")
 		wait(1)
 		game:GetService("Players"):Chat("le le le le le le le")
 		wait(1)
