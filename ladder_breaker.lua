@@ -24,6 +24,7 @@ local antiVoidEnabled = false
 local antiSitEnabled = false
 local antiWarpEnabled = false
 local chatBypassEn = false
+local autoDropDolce = false
 enabledSpy = false
 spyOnMyself = false
 public = false
@@ -258,9 +259,9 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 
 local function chatBypass()
 	while chatBypassEn do
-		game:GetService("Players"):Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE le le le")
+		game:GetService("Players"):Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
 		wait(1)
-		game:GetService("Players"):Chat("/e ABC le le le le le le le le")
+		game:GetService("Players"):Chat("/e ABC")
 		wait(1)
 		game:GetService("Players"):Chat("le le le le le le le")
 		wait(1)
@@ -596,7 +597,7 @@ DefenseTab:AddButton({
 })
 
 DefenseTab:AddButton({
-	Name = "drop dolce milk (inventory)",
+	Name = "drop dolce milk",
 	Callback = function()
 		local tool = Player.Character:FindFirstChildWhichIsA("Tool")
 		if tool then
@@ -610,6 +611,21 @@ DefenseTab:AddButton({
 			})
 		end
 	end
+})
+
+DefenseTab:AddToggle({
+	Name = "auto drop dolce milk",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		autoDropDolce = Value
+		while autoDropDolce do
+			local tool = game.Players.LocalPlayer.Character:FindFirstChild("Dolce Milk")
+			if tool and autoDropDolce then
+				tool.Parent = workspace
+			end
+		end
+	end    
 })
 --character settings tab
 PlayerTab:AddTextbox({
