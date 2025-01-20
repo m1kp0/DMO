@@ -708,6 +708,11 @@ PlayerTab:AddButton({
 				Image = "rbxassetid://18624604880",
 				Time = 5
 			})
+		else
+			workspace.Gravity = 10
+			Player.Character.Humanoid.Sit = true
+			wait(1)
+			workspace.Gravity = 192.6
 		end
   	end    
 })
