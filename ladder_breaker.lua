@@ -640,7 +640,7 @@ DefenseTab:AddToggle({
 			wait()
 			for i, d in pairs(workspace:GetDescendants()) do
 				if d.Name == "Dolce Milk" and d.Parent == workspace then
-					d.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.RightLowerArm.CFrame.Position + Vector3.new(-0.5, -1, 0))
+					d.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0))
 				end
 			end
 		end
