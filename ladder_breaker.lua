@@ -25,6 +25,7 @@ local antiSitEnabled = false
 local antiWarpEnabled = false
 local chatBypassEn = false
 local autoDropDolce = false
+local autoGrabDolce = false
 enabledSpy = false
 spyOnMyself = false
 public = false
@@ -624,6 +625,23 @@ DefenseTab:AddToggle({
 			local tool = game.Players.LocalPlayer.Character:FindFirstChild("Dolce Milk")
 			if tool and autoDropDolce then
 				tool.Parent = workspace
+			end
+		end
+	end    
+})
+
+DefenseTab:AddToggle({
+	Name = "auto grab dolce milk",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		autoGrabDolce = Value
+		while autoGrabDolce do
+			wait()
+			for i, d in pairs(workspace:GetDescendants()) do
+				if d.Name == "Dolce Milk" and d.Parent == workspace then
+					d.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.RightLowerArm.CFrame.Position)
+				end
 			end
 		end
 	end    
