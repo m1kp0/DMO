@@ -1,5 +1,5 @@
 --server
-local Players = game:GetService('Players')
+local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local saymsg = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
@@ -16,6 +16,7 @@ local TimeOfExecutedLB = 0
 local minutesOfExecutedLB = 0
 local breakingSpeed
 local SavedCheckpoint
+local ladderTransparency = 0.5
 
 --toggle
 local breakFullLadderEnabled = false
@@ -548,6 +549,15 @@ DefenseTab:AddToggle({
 			workspace.FallenPartsDestroyHeight = -100
 		end
 	end    
+})
+
+DefenseTab:AddTextbox({
+	Name = "ladder transparency",
+	Default = "0.5",
+	TextDisappear = true,
+	Callback = function(Value)
+		ladderTransparency = Value
+	end	  
 })
 
 DefenseTab:AddToggle({
