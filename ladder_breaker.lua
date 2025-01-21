@@ -567,6 +567,7 @@ DefenseTab:AddToggle({
 					k.Color = p.Color
 					k.BrickColor = p.BrickColor
 					k.Transparency = 0.5
+					k.Material = "SmoothPlastic"
 				end
 			end
 		else
@@ -823,6 +824,7 @@ Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сооб
 Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
 Ctab:AddParagraph("v4.2", "haha nice чистый код скрипта; added spy on myself (chat tab)")
 Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti sit; updated defense tab")
+Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
