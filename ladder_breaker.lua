@@ -648,7 +648,7 @@ DefenseTab:AddToggle({
 	Callback = function(Value)
 		autoGrabDolce = Value
 		while game:GetService("RunService").RenderStepped:Wait() and autoGrabDolce do
-			wait()
+			wait(0.1)
 			for i, d in pairs(workspace:GetDescendants()) do
 				if d.Name == "Dolce Milk" and d.Parent == workspace then
 					d.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0))
