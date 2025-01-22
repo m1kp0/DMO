@@ -844,6 +844,20 @@ ScriptTab:AddButton({
   	end    
 })
 
+ScriptTab:AddButton({
+	Name = "jerk off",
+	Callback = function()
+        loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+  	end    
+})
+
+ScriptTab:AddButton({
+	Name = "pathing (only pc)",
+	Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/ONLY-PC_pathing"))()
+  	end    
+})
+
 --clocktime tab
 ClockTab:AddButton({
 	Name = "night",
