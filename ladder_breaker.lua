@@ -1,4 +1,4 @@
---server
+--server -- ДОБАВЬ ДЖЕРК ОФФ СРОЧНО
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -262,15 +262,19 @@ chatFrame.ChatChannelParentFrame.Visible = true
 chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 
 local function chatBypass()
-	while chatBypassEn do
-		game:GetService("Players"):Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-		wait(1)
-		game:GetService("Players"):Chat("/e ABC")
-		wait(1)
-		game:GetService("Players"):Chat("le le le le le le le")
-		wait(1)
-		game:GetService("Players"):Chat("le le le le le le le le le le le")
-		wait(1)
+	while chatBypassEnabled do
+		Players:Chat'le le le le le'
+        wait(0.5)
+        Players:Chat'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE'
+        wait(0.5)
+        Players:Chat'/e ABC'
+        wait()
+        Players:Chat'/e CHATBYPASS'
+        wait(0.5)
+        Players:Chat'le le le le le le le le le'
+        wait(0.5)
+        Players:Chat'le le le le le le le'
+        wait(0.5)
 	end
 end
 
@@ -852,7 +856,7 @@ ScriptTab:AddButton({
 })
 
 ScriptTab:AddButton({
-	Name = "pathing (only pc)",
+	Name = "pathing & floating",
 	Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/ONLY-PC_pathing"))()
   	end    
