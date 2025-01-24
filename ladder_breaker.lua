@@ -1,4 +1,4 @@
---server -- ДОБАВЬ ДЖЕРК ОФФ СРОЧНО
+--server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -859,6 +859,13 @@ ScriptTab:AddButton({
 	Name = "pathing & floating",
 	Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/ONLY-PC_pathing"))()
+  	end    
+})
+
+ScriptTab:AddButton({
+	Name = "отдельный chat bypass",
+	Callback = function()
+        loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/chat_bypass.lua')()
   	end    
 })
 
