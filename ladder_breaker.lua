@@ -364,9 +364,9 @@ ChatTab:AddToggle({
 	Callback = function(Value)
 		chatBypassEn = Value
 		if chatBypassEn then
-			game.StarterGui.HDAdminGUIs:GetChildren().Visible = false
+			game.Players.LocalPlayer.PlayerGui.HDAdminGUIs.Enabled = false
 		else
-			game.StarterGui.HDAdminGUIs:GetChildren().Visible = true
+			game.Players.LocalPlayer.PlayerGui.HDAdminGUIs.Enabled = true
 		end
 		repeat task.wait()
 			Players:Chat(x())
