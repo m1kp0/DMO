@@ -262,17 +262,12 @@ chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Positio
 
 local function chatBypass()
 	while chatBypassEnabled do
-		Players:Chat'le le le le le'
         wait(0.5)
-        Players:Chat'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE'
+        Players:Chat'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE [LADDER BREAKER CHAT BYPASS]'
         wait(0.5)
-        Players:Chat'/e ABC'
-        wait()
-        Players:Chat'/e CHATBYPASS'
+        Players:Chat'/e ABC [LADDER BREAKER CHAT BYPASS]'
         wait(0.5)
-        Players:Chat'le le le le le le le le le'
-        wait(0.5)
-        Players:Chat'le le le le le le le'
+        Players:Chat'/e CHATBYPASS [LADDER BREAKER CHAT BYPASS]'
         wait(0.5)
 	end
 end
