@@ -608,15 +608,6 @@ DefenseTab:AddToggle({
 	end    
 })
 
-DefenseTab:AddTextbox({
-	Name = "ladder transparency",
-	Default = "0.5",
-	TextDisappear = true,
-	Callback = function(Value)
-		ladderTransparency = Value
-	end	  
-})
-
 DefenseTab:AddToggle({
 	Name = "create my ladder",
 	Default = false,
@@ -939,7 +930,16 @@ Players.PlayerRemoving:Connect(function()
     AmountOfPlayers = AmountOfPlayers - 1
     CounOfPlayersLbl:Set("count of players: "..AmountOfPlayers.."")
 end)
+
 local hourOfExecutedLB = 0
+
+OrionLib:MakeNotification({
+	Name = "Ladder Breaker loaded",
+	Content = "completely",
+	Image = "rbxassetid://4483345998",
+	Time = 3
+})
+
 while true do
 	wait(1)
 	TimeOfExecutedLB = TimeOfExecutedLB + 1
@@ -957,12 +957,5 @@ while true do
 		wait()
 	end
 end
-
-OrionLib:MakeNotification({
-	Name = "Ladder Breaker loaded",
-	Content = "completely",
-	Image = "rbxassetid://4483345998",
-	Time = 3
-})
 
 OrionLib:Init()
