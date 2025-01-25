@@ -260,15 +260,13 @@ local chatFrame = Player.PlayerGui.Chat.Frame
 chatFrame.ChatChannelParentFrame.Visible = true
 chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 
-local function chatBypass()
-	while chatBypassEnabled do
-        wait(0.2)
-		Players:Chat'[m1kp bypasser] ABCDEFGHIJKLMNOPQRSTUVWXWZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXWZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXWZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXWZ1234567890ABCDEFGHIJKLMNOPQRSTUVWXWZ1234567890'
-        wait(0.2)
-        Players:Chat'[m1kp bypasser] /e ABC'
-        wait(0.2)
-        Players:Chat'[m1kp bypasser] /e CHATBYPASS'
+local function x()
+	local length = math.random(1,5)
+	local array = {}
+	for i = 1, length do
+		array[i] = string.char(math.random(32, 126))
 	end
+	return table.concat(array)
 end
 
 --library
@@ -365,7 +363,14 @@ ChatTab:AddToggle({
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		chatBypassEn = Value
-		chatBypass()
+		if chatBypassEn then
+			game.StarterGui.HDAdminGUIs:GetChildren().Visible = false
+		else
+			game.StarterGui.HDAdminGUIs:GetChildren().Visible = true
+		end
+		repeat task.wait()
+			Players:Chat(x())
+		until chatBypassEn == false
 	end    
 })
 
