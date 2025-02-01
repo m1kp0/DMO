@@ -364,12 +364,19 @@ ChatTab:AddToggle({
 	Callback = function(Value)
 		chatBypassEn = Value
 		if chatBypassEn then
-			game.Players.LocalPlayer.PlayerGui.HDAdminGUIs.Enabled = false
+			Player.PlayerGui.HDAdminGUIs.Enabled = false
 		else
-			game.Players.LocalPlayer.PlayerGui.HDAdminGUIs.Enabled = true
+			Player.PlayerGui.HDAdminGUIs.Enabled = true
 		end
 		repeat task.wait()
-			Players:Chat(x())
+			Players:Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            wait(0.2)
+            Players:Chat("/e ABC")
+            wait(0.2)
+            Players:Chat("le le le le le le le")
+            wait(0.2)
+            Players:Chat("le le le le le")
+            wait(0.2)
 		until chatBypassEn == false
 	end    
 })
@@ -617,7 +624,7 @@ DefenseTab:AddToggle({
 		autoDropDolce = Value
 		while autoDropDolce do
 			wait()
-			local tool = game.Players.LocalPlayer.Character:FindFirstChild("Dolce Milk")
+			local tool = Player.Character:FindFirstChild("Dolce Milk")
 			if tool and autoDropDolce then
 				tool.Parent = workspace
 			end
@@ -635,7 +642,7 @@ DefenseTab:AddToggle({
 			wait(0.1)
 			for i, d in pairs(workspace:GetDescendants()) do
 				if d.Name == "Dolce Milk" and d.Parent == workspace then
-					d.Handle.CFrame = CFrame.new(game.Players.LocalPlayer.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0))
+					d.Handle.CFrame = CFrame.new(Player.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0))
 				end
 			end
 		end
