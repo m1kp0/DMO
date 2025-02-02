@@ -260,13 +260,8 @@ local chatFrame = Player.PlayerGui.Chat.Frame
 chatFrame.ChatChannelParentFrame.Visible = true
 chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 
-local function x()
-	local length = math.random(1,5)
-	local array = {}
-	for i = 1, length do
-		array[i] = string.char(math.random(32, 126))
-	end
-	return table.concat(array)
+local function ChangeFov(Fov, Time)
+	TweenService:Create(workspace.Camera, TweenInfo.new(Time), {FieldOfView = Fov}):Play()
 end
 
 --library
@@ -488,13 +483,8 @@ DefenseTab:AddToggle({
 	Flag = "AntiWarpToggle",
 	Callback = function(Value)
 		antiWarpEnabled = Value
-		if antiWarpEnabled then
-			while antiWarpEnabled do
-				if workspace.Camera.FieldOfView < 70 or workspace.Camera.FieldOfView > 70 then
-					workspace.Camera.FieldOfView = 70
-				end
-			wait()
-			end
+		while RunService.RenderStepped:Wait() and antiWarpEnabled do
+			ChangeFov(70, 0.0000001)
 		end
 	end    
 })
@@ -506,17 +496,13 @@ DefenseTab:AddToggle({
 	Flag = "AntiSitToggle",
 	Callback = function(Value)
 		antiSitEnabled = Value
-		if antiSitEnabled then
-			while antiSitEnabled do
-				if Player.Character:FindFirstChild("Humanoid").Sit == true then
-					Player.Character:FindFirstChild("Humanoid").Sit = false
-					if workspace.Sit.TouchInterest then
-						workspace.Sit.TouchInterest:Destroy()
-					end
-				end
-			wait()
+		Player.Character.Humanoid.Seated:Connect(function()
+			if antiSitEnabled then
+				Player.Character.Humanoid.Sit = false
+			else
+				antiSitEnabled = false
 			end
-		end
+		end)
 	end    
 })
 
@@ -719,8 +705,6 @@ PlayerTab:AddToggle({
 PlayerTab:AddButton({
 	Name = "sit",
 	Callback = function()
-		Player.Character.Humanoid.Sit = true
-		wait(0.01)
 		if OrionLib.Flags["AntiSitToggle"].Value == true then
 			OrionLib:MakeNotification({
 				Name = "you need to disable the anti sit",
@@ -847,6 +831,7 @@ Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
 Ctab:AddParagraph("v4.2", "haha nice чистый код скрипта; added spy on myself (chat tab)")
 Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti sit; updated defense tab")
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
+Ctab:AddParagraph("optimized", "optimized script yeeeaaaa; fixed anti-warp")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
