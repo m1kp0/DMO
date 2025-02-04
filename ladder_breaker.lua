@@ -358,20 +358,18 @@ ChatTab:AddToggle({
 	Color = Color3.fromRGB(102, 0, 102),
 	Callback = function(Value)
 		chatBypassEn = Value
-		if chatBypassEn then
-			Player.PlayerGui.HDAdminGUIs.Enabled = false
-		else
-			Player.PlayerGui.HDAdminGUIs.Enabled = true
-		end
-		repeat task.wait()
-			Players:Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-            wait(0.2)
-            Players:Chat("/e ABC")
-            wait(0.2)
-            Players:Chat("le le le le le le le")
-            wait(0.2)
-            Players:Chat("le le le le le")
-            wait(0.2)
+		repeat wait(1)
+			Players:Chat("[m1kp chatbypass]: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ true false", "All")
+			wait()
+			Players:Chat("[m1kp chatbypass]: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ true false", "All")
+			wait()
+			Players:Chat("[m1kp chatbypass]: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz0987654321ABCDEFGHIJKLMNOPQRSTUVWXYZ true false", "All")
+			wait()
+			Players:Chat("/e ABC")
+			wait()
+			Players:Chat("le le le le le le le")
+			wait() 
+			Players:Chat("le le le le le")
 		until chatBypassEn == false
 	end    
 })
