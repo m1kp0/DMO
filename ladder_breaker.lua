@@ -343,8 +343,10 @@ ChatTab:AddToggle({
 
 ChatTab:AddSection({Name = "advanced"})
 
+ChatTab:AddLabel("ПОЖАЛУЙСТА НЕ ПИШИТЕ В ОБЫЧНЫЙ ЧАТ НИЧЕГО СО ВКЛЮЧЕННЫМ БАЙПАССОМ АТО БУДЕТ БАН")
+
 ChatTab:AddTextbox({
-	Name = "chat",
+	Name = "chat (не забанят, пишите сюда!!!!)",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(messageToSay)
