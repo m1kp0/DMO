@@ -4,6 +4,7 @@ local version = "v4.7"
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 local saymsg = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
 local getmsg = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
 local StarterGui = game:GetService("StarterGui")
@@ -647,6 +648,7 @@ DefenseTab:AddButton({
 		Player.CharacterAdded:Connect(function()
 			wait(0.2)
 			Player.Character.HumanoidRootPart.CFrame = CFrame.new(flashback)
+			flashback = nil
 		end)
   	end    
 })
@@ -721,8 +723,8 @@ DefenseTab:AddToggle({
 --character settings tab
 PlayerTab:AddTextbox({
 	Name = "speed",
-	Default = "",
-	TextDisappear = true,
+	Default = "16",
+	TextDisappear = false,
 	Callback = function(Speed)
 		Player.Character.Humanoid.WalkSpeed = Speed
 	end	  
@@ -730,8 +732,8 @@ PlayerTab:AddTextbox({
 
 PlayerTab:AddTextbox({
 	Name = "jump power",
-	Default = "",
-	TextDisappear = true,
+	Default = "50",
+	TextDisappear = false,
 	Callback = function(Jumpp)
 		Player.Character.Humanoid.JumpPower = Jumpp
 	end	  
@@ -757,8 +759,8 @@ PlayerTab:AddToggle({
 
 PlayerTab:AddTextbox({
 	Name = "gravity",
-	Default = "",
-	TextDisappear = true,
+	Default = "196",
+	TextDisappear = false,
 	Callback = function(Grav)
 		workspace.Gravity = Grav
 	end	  
@@ -766,8 +768,8 @@ PlayerTab:AddTextbox({
 
 PlayerTab:AddTextbox({
 	Name = "field of view",
-	Default = "",
-	TextDisappear = true,
+	Default = "70",
+	TextDisappear = false,
 	Callback = function(fov)
 		workspace.Camera.FieldOfView = fov
 	end	  
@@ -911,7 +913,7 @@ ClockTab:AddButton({
 
 ClockTab:AddTextbox({
 	Name = "custom time",
-	Default = "",
+	Default = game.Lighting.ClockTime,
 	TextDisappear = true,
 	Callback = function(Timee)
 		game.Lighting.ClockTime = Timee
@@ -926,7 +928,7 @@ Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti 
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
 Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
-Ctab:AddParagraph("v4.7", "disabled: text disappear; added: anti-bang dolce milk (script tab), died teleport (defense tab); updated: checkpoint")
+Ctab:AddParagraph("v4.7", "disabled: text disappear; added: died teleport (defense tab)")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
