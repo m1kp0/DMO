@@ -1,3 +1,5 @@
+--version
+local version = "v4.7"
 --server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -343,11 +345,21 @@ ChatTab:AddToggle({
 
 ChatTab:AddSection({Name = "advanced"})
 
+ChatTab:AddParagraph("ВАЖНО", "НЕ ПИШИТЕ НИЧЕГО В ОБЫНЧЫЙ ЧАТ СО ВКЛЮЧЕННЫМ БАЙПАССОМ, ИНАЧЕ - БАН И НЕ БУДЕТ РОБЛАКСА")
+
 ChatTab:AddTextbox({
-	Name = "chat",
+	Name = "chat (не забанят, пишите сюда!!!!)",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(messageToSay)
+		Players:Chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE false")
+        wait()
+        Players:Chat("/e ABC")
+        wait()
+        Players:Chat("le le le le le le le")
+        wait()
+        Players:Chat("le le le le le")
+        wait()
 		ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(messageToSay, "All")
 	end	  
 })
@@ -409,6 +421,11 @@ ChatTab:AddToggle({
 					wait(2)
 					ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️", "All")
 				until spamen == false
+			elseif raidSymbol == "💩" then
+				repeat
+					wait(2)
+					ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩", "All")
+				until spamen == false
 			end
 		end
 	end    
@@ -417,7 +434,7 @@ ChatTab:AddToggle({
 ChatTab:AddDropdown({
 	Name = "raid symbol",
 	Default = "👹",
-	Options = {"👹", "👍", "🥵", "😈", "👺", "❤️"},
+	Options = {"👹", "👍", "🥵", "😈", "👺", "❤️", "💩"},
 	Callback = function(Value)
 		raidSymbol = Value
 	end    
@@ -504,11 +521,18 @@ TPTab:AddButton({
 --defense tab
 DefenseTab:AddSection({Name = "anti-admin"})
 
-DefenseTab:AddButton({
-	Name = "delete blur",
-	Callback = function()
-        workspace.Camera.Blur:Destroy()
-  	end    
+DefenseTab:AddToggle({
+	Name = "anti blur",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiSitToggle",
+	Callback = function(Value)
+		if Value then
+			workspace.Camera.Blur.Enabled = false
+		else
+			workspace.Camera.Blur.Enabled = true
+		end
+	end    
 })
 
 
@@ -615,12 +639,25 @@ DefenseTab:AddToggle({
 })
 
 DefenseTab:AddButton({
+	Name = "died teleport",
+	Callback = function()
+		Player.Character.Humanoid.Died:Connect(function()
+			flashback = Player.Character.HumanoidRootPart.Position
+		end)
+		Player.CharacterAdded:Connect(function()
+			wait(0.2)
+			Player.Character.HumanoidRootPart.CFrame = CFrame.new(flashback)
+		end)
+  	end    
+})
+
+DefenseTab:AddButton({
 	Name = "save checkpoint",
 	Callback = function()
 		SavedCheckpoint = Player.Character.HumanoidRootPart.Position
 		Player.CharacterAdded:Connect(function()
 			wait(0.2)
-			Player.Character.HumanoidRootPart.CFrame = CFrame.new(SavedCheckpoint + Vector3.new(0, 3, 0))
+			Player.Character.HumanoidRootPart.CFrame = CFrame.new(SavedCheckpoint)
 		end)
   	end    
 })
@@ -768,6 +805,22 @@ PlayerTab:AddButton({
   	end    
 })
 
+PlayerTab:AddToggle({
+	Name = "platform stand",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value then
+			workspace.Gravity = 10
+			Player.Character.Humanoid.PlatformStand = true
+			wait(1)
+			workspace.Gravity = 192.6
+		else
+			Player.Character.Humanoid.PlatformStand = false
+		end
+	end
+})
+
 PlayerTab:AddButton({
 	Name = "r6 animation",
 	Callback = function()
@@ -796,13 +849,6 @@ ScriptTab:AddButton({
 	Name = "float",
 	Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))("https://t.me/arceusxscripts")
-  	end    
-})
-
-ScriptTab:AddButton({
-	Name = "shaders",
-	Callback = function()
-		loadstring(game:HttpGet(('https://pastefy.app/xXkUxA0P/raw'),true))("t.me/arceusxscripts")
   	end    
 })
 
@@ -878,7 +924,9 @@ Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
 Ctab:AddParagraph("v4.2", "haha nice чистый код скрипта; added spy on myself (chat tab)")
 Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti sit; updated defense tab")
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
-Ctab:AddParagraph("optimized", "optimized script yeeeaaaa; fixed anti-warp")
+Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
+Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
+Ctab:AddParagraph("v4.7", "disabled: text disappear; added: anti-bang dolce milk (script tab), died teleport (defense tab); updated: checkpoint")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
@@ -909,10 +957,10 @@ end)
 local hourOfExecutedLB = 0
 
 OrionLib:MakeNotification({
-	Name = "Ladder Breaker loaded",
+	Name = "Ladder Breaker "..version.." loaded",
 	Content = "completely",
 	Image = "rbxassetid://4483345998",
-	Time = 3
+	Time = 7
 })
 
 while true do
