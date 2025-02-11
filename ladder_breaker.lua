@@ -640,20 +640,6 @@ DefenseTab:AddToggle({
 })
 
 DefenseTab:AddButton({
-	Name = "died teleport",
-	Callback = function()
-		Player.Character.Humanoid.Died:Connect(function()
-			flashback = Player.Character.HumanoidRootPart.Position
-		end)
-		Player.CharacterAdded:Connect(function()
-			wait(0.2)
-			Player.Character.HumanoidRootPart.CFrame = CFrame.new(flashback)
-			flashback = nil
-		end)
-  	end    
-})
-
-DefenseTab:AddButton({
 	Name = "save checkpoint",
 	Callback = function()
 		SavedCheckpoint = Player.Character.HumanoidRootPart.Position
@@ -882,6 +868,13 @@ ScriptTab:AddButton({
   	end    
 })
 
+ScriptTab:AddButton({
+	Name = "dolce milk anti bang",
+	Callback = function()
+        loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/DMO/refs/heads/main/antibang.lua')()
+  	end    
+})
+
 --clocktime tab
 ClockTab:AddButton({
 	Name = "night",
@@ -928,7 +921,7 @@ Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti 
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
 Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
-Ctab:AddParagraph("v4.7", "disabled: text disappear; added: died teleport (defense tab)")
+Ctab:AddParagraph("v4.7", "disabled text disappear; added anti bang (script tab)")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
