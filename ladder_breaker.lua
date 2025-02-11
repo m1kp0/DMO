@@ -1,3 +1,5 @@
+--version
+local version = "v4.6"
 --server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -343,7 +345,7 @@ ChatTab:AddToggle({
 
 ChatTab:AddSection({Name = "advanced"})
 
-ChatTab:AddLabel("ПОЖАЛУЙСТА НЕ ПИШИТЕ В ОБЫЧНЫЙ ЧАТ НИЧЕГО СО ВКЛЮЧЕННЫМ БАЙПАССОМ АТО БУДЕТ БАН")
+ChatTab:AddParagraph("ВАЖНО", "НЕ ПИШИТЕ НИЧЕГО В ОБЫНЧЫЙ ЧАТ СО ВКЛЮЧЕННЫМ БАЙПАССОМ, ИНАЧЕ - БАН И НЕ БУДЕТ РОБЛАКСА")
 
 ChatTab:AddTextbox({
 	Name = "chat (не забанят, пишите сюда!!!!)",
@@ -519,11 +521,18 @@ TPTab:AddButton({
 --defense tab
 DefenseTab:AddSection({Name = "anti-admin"})
 
-DefenseTab:AddButton({
-	Name = "delete blur",
-	Callback = function()
-        workspace.Camera.Blur:Destroy()
-  	end    
+DefenseTab:AddToggle({
+	Name = "anti blur",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Flag = "AntiSitToggle",
+	Callback = function(Value)
+		if Value then
+			workspace.Camera.Blur.Enabled = false
+		else
+			workspace.Camera.Blur.Enabled = true
+		end
+	end    
 })
 
 
@@ -783,6 +792,22 @@ PlayerTab:AddButton({
   	end    
 })
 
+PlayerTab:AddToggle({
+	Name = "platform stand",
+	Default = false,
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		if Value then
+			workspace.Gravity = 10
+			Player.Character.Humanoid.PlatformStand = true
+			wait(1)
+			workspace.Gravity = 192.6
+		else
+			Player.Character.Humanoid.PlatformStand = false
+		end
+	end
+})
+
 PlayerTab:AddButton({
 	Name = "r6 animation",
 	Callback = function()
@@ -811,13 +836,6 @@ ScriptTab:AddButton({
 	Name = "float",
 	Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Float'))("https://t.me/arceusxscripts")
-  	end    
-})
-
-ScriptTab:AddButton({
-	Name = "shaders",
-	Callback = function()
-		loadstring(game:HttpGet(('https://pastefy.app/xXkUxA0P/raw'),true))("t.me/arceusxscripts")
   	end    
 })
 
@@ -894,6 +912,7 @@ Ctab:AddParagraph("v4.2", "haha nice чистый код скрипта; added s
 Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti sit; updated defense tab")
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
+Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
@@ -924,7 +943,7 @@ end)
 local hourOfExecutedLB = 0
 
 OrionLib:MakeNotification({
-	Name = "Ladder Breaker loaded",
+	Name = "Ladder Breaker "..version.." loaded",
 	Content = "completely",
 	Image = "rbxassetid://4483345998",
 	Time = 3
