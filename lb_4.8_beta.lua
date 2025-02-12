@@ -1,5 +1,5 @@
 --version
-local version = "v4.7"
+local version = "v4.8"
 --server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -920,6 +920,23 @@ ClockTab:AddTextbox({
 	end	  
 })
 
+ClockTab:AddToggle({
+	Name = "real time",
+	Default = false,
+	Flag = "clocktimeflag",
+	Color = Color3.fromRGB(102, 0, 102),
+	Callback = function(Value)
+		while Value do
+			wait(1)
+			local niggga = os.time()
+			local sex = "%H"
+			local gay = os.date(sex, niggga)
+			wait()
+			game.Lighting.ClockTime = gay
+		end
+	end
+})
+
 --changelog tab
 Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сообщения не забанят), chat bypass, послать жестко нахуй, послать еще раз; save checkpoint, delete checkpoint (defense tab); hour (server tab); inf zoom distance (character tab); cleared: changelog tab; поменял местами name и display name (server tab); fixed: теперь минута прибавляется каждые 59 а не 60 секунд (server tab)")
 Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
@@ -929,6 +946,7 @@ Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, aut
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
 Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
 Ctab:AddParagraph("v4.7", "disabled: text disappear; added: died teleport (defense tab)")
+Ctab:AddParagraph("v4.8", "deleted: hours (server tab); added: real time (server tab), real time (time tab)")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
@@ -943,6 +961,8 @@ Servertab:AddSection({Name = "you"})
 
 Servertab:AddLabel("you: "..Player.DisplayName.."("..Player.Name..")")
 local ExecutedLBbl = Servertab:AddLabel("script executed: "..minutesOfExecutedLB.." min "..TimeOfExecutedLB.." sec")
+local RealTimeLbl = Servertab:AddLabel("REAL TIME")
+
 
 Players.PlayerAdded:Connect(function(plr)
     AmountOfPlayers = AmountOfPlayers + 1
@@ -975,12 +995,11 @@ while true do
 		TimeOfExecutedLB = 0
 		wait()
 	end
-	if minutesOfExecutedLB == 59 and TimeOfExecutedLB == 59 then
-		hourOfExecutedLB = hourOfExecutedLB + 1
-		minutesOfExecutedLB = 0
-		TimeOfExecutedLB = 0
-		wait()
-	end
+	local time = os.time()
+	local format = "%H:%M"
+	local realTime = os.date(format, time)
+	wait()
+	RealTimeLbl:Set("real time: "..realTime.."")
 end
 
 OrionLib:Init()
