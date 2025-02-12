@@ -920,23 +920,6 @@ ClockTab:AddTextbox({
 	end	  
 })
 
-ClockTab:AddToggle({
-	Name = "real time",
-	Default = false,
-	Flag = "clocktimeflag",
-	Color = Color3.fromRGB(102, 0, 102),
-	Callback = function(Value)
-		while Value do
-			wait(1)
-			local niggga = os.time()
-			local sex = "%H"
-			local gay = os.date(sex, niggga)
-			wait()
-			game.Lighting.ClockTime = gay
-		end
-	end
-})
-
 --changelog tab
 Ctab:AddParagraph("v4.0 биг обнова", "added: chat bypass (за сообщения не забанят), chat bypass, послать жестко нахуй, послать еще раз; save checkpoint, delete checkpoint (defense tab); hour (server tab); inf zoom distance (character tab); cleared: changelog tab; поменял местами name и display name (server tab); fixed: теперь минута прибавляется каждые 59 а не 60 секунд (server tab)")
 Ctab:AddParagraph("v4.1", "added: drop dolce milk; updated: chat bypass")
