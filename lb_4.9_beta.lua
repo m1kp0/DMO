@@ -1,5 +1,5 @@
 --version
-local version = "v4.8"
+local version = "v4.9"
 --server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -946,7 +946,8 @@ Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, aut
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
 Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
 Ctab:AddParagraph("v4.7", "disabled: text disappear; added: died teleport (defense tab)")
-Ctab:AddParagraph("v4.8", "deleted: hours (server tab); added: real time (server tab), real time (time tab)")
+Ctab:AddParagraph("v4.8", "deleted: hours (server tab); added: real time (server tab)")
+Ctab:AddParagraph("v4.9", "fixed: real time")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
