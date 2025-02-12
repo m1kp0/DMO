@@ -1,5 +1,5 @@
 --version
-local version = "v4.7"
+local version = "v4.9"
 --server
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
@@ -640,6 +640,20 @@ DefenseTab:AddToggle({
 })
 
 DefenseTab:AddButton({
+	Name = "died teleport",
+	Callback = function()
+		Player.Character.Humanoid.Died:Connect(function()
+			flashback = Player.Character.HumanoidRootPart.Position
+		end)
+		Player.CharacterAdded:Connect(function()
+			wait(0.2)
+			Player.Character.HumanoidRootPart.CFrame = CFrame.new(flashback)
+			flashback = nil
+		end)
+  	end    
+})
+
+DefenseTab:AddButton({
 	Name = "save checkpoint",
 	Callback = function()
 		SavedCheckpoint = Player.Character.HumanoidRootPart.Position
@@ -868,13 +882,6 @@ ScriptTab:AddButton({
   	end    
 })
 
-ScriptTab:AddButton({
-	Name = "dolce milk anti bang",
-	Callback = function()
-        loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/DMO/refs/heads/main/antibang.lua')()
-  	end    
-})
-
 --clocktime tab
 ClockTab:AddButton({
 	Name = "night",
@@ -921,7 +928,9 @@ Ctab:AddParagraph("v4.3", "added: anti kill parts, create my ladder; fixed anti 
 Ctab:AddParagraph("v4.4", "added: ladder transparency, auto-drop dolce milk, auto-grab dolce milk")
 Ctab:AddParagraph("v4.5", "optimized script yeeeaaaa; fixed anti-warp; updated chat-bypass")
 Ctab:AddParagraph("v4.6", "added: toggle anti blur (defense tab), platform stand (character tab), version notify; deleted: delete blur button (defense tab), shaders (script tab)")
-Ctab:AddParagraph("v4.7", "disabled text disappear; added anti bang (script tab)")
+Ctab:AddParagraph("v4.7", "disabled: text disappear; added: died teleport (defense tab)")
+Ctab:AddParagraph("v4.8", "deleted: hours (server tab); added: real time (server tab)")
+Ctab:AddParagraph("v4.9", "fixed: real time")
 
 --server tab
 AmountOfPlayers = #Players:GetPlayers()
@@ -936,6 +945,8 @@ Servertab:AddSection({Name = "you"})
 
 Servertab:AddLabel("you: "..Player.DisplayName.."("..Player.Name..")")
 local ExecutedLBbl = Servertab:AddLabel("script executed: "..minutesOfExecutedLB.." min "..TimeOfExecutedLB.." sec")
+local RealTimeLbl = Servertab:AddLabel("REAL TIME")
+
 
 Players.PlayerAdded:Connect(function(plr)
     AmountOfPlayers = AmountOfPlayers + 1
@@ -968,12 +979,11 @@ while true do
 		TimeOfExecutedLB = 0
 		wait()
 	end
-	if minutesOfExecutedLB == 59 and TimeOfExecutedLB == 59 then
-		hourOfExecutedLB = hourOfExecutedLB + 1
-		minutesOfExecutedLB = 0
-		TimeOfExecutedLB = 0
-		wait()
-	end
+	local time = os.time()
+	local format = "%H:%M"
+	local realTime = os.date(format, time)
+	wait()
+	RealTimeLbl:Set("real time: "..realTime.."")
 end
 
 OrionLib:Init()
