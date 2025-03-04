@@ -102,9 +102,7 @@ local function update_gravity(grav) workspace.Gravity = grav end
 local function update_field_of_view(fov) cam.FieldOfView = fov end
 local function update_walk_speed(ws) plr.Character.Humanoid.WalkSpeed = ws end
 local function update_jump_power(jp) plr.Character.Humanoid.JumpPower = jp end
-local function tp(cframe)
-	plr.Character.HumanoidRootPart.CFrame = cframe
-end
+local function tp(cframe) plr.Character.HumanoidRootPart.CFrame = cframe end
 
 -- notify function
 local function notify(title, content, dur, subcontent)
@@ -650,9 +648,9 @@ local function load_dmo()
 		Title = "LadderBreaker",
 		SubTitle = "DMO",
 		TabWidth = 160,
-		Size = UDim2.fromOffset(1200, 1000),
+		Size = UDim2.fromOffset(1200, 800),
 		Resize = true,
-		MinSize = Vector2.new(1000, 500),
+		MinSize = Vector2.new(1200, 800),
 		Acrylic = true,
 		Theme = "Dark",
 		MinimizeKey = Enum.KeyCode.RightControl
@@ -831,9 +829,9 @@ local function load_premium()
 		Title = "LadderBreaker",
 		SubTitle = "Premium",
 		TabWidth = 160,
-		Size = UDim2.fromOffset(2000, 1000),
+		Size = UDim2.fromOffset(1200, 800),
 		Resize = true,
-		MinSize = Vector2.new(470, 380),
+		MinSize = Vector2.new(1200, 800),
 		Acrylic = true,
 		Theme = "Dark",
 		MinimizeKey = Enum.KeyCode.RightControl
