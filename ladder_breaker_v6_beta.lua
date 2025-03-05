@@ -8,7 +8,6 @@ local premium_user = false
 -- script
 local plrs = game.Players
 local plr = plrs.LocalPlayer
-local plrUserId = plr.UserId
 local cam = workspace.Camera
 local starter_gui = game:GetService"StarterGui"
 local run_service = game:GetService"RunService"
@@ -27,7 +26,6 @@ local seconds_of_executed_ladderbreaker = 0
 local minutes_of_executed_ladderbreaker = 0
 local saved_position = nil 
 local message_repeats = 3
-local osk = 1
 local old_position
 local saved_checkpoint
 
