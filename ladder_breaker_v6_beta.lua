@@ -8,6 +8,7 @@ local premium_user = false
 -- script
 local plrs = game.Players
 local plr = plrs.LocalPlayer
+local plrUserId = plr.UserId
 local cam = workspace.Camera
 local starter_gui = game:GetService"StarterGui"
 local run_service = game:GetService"RunService"
@@ -26,6 +27,7 @@ local seconds_of_executed_ladderbreaker = 0
 local minutes_of_executed_ladderbreaker = 0
 local saved_position = nil 
 local message_repeats = 3
+local osk = 1
 local old_position
 local saved_checkpoint
 
@@ -60,9 +62,11 @@ spy_properties = {
 _G.chatSpyInstance = instance
 
 -- library
-print"[LadderBreaker]: Loading UI-Library (it may take 10-15 seconds)"
+print"[LadderBreaker]: Loading UI-Libraries (it may take 10-20 seconds)"
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 print"[LadderBreaker]: Loaded UI-Library: Fluent"
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+print"[LadderBreaker]: Loaded UI-Library: Rayfield"
 
 -- chat spy
 print"[LadderBreaker]: Loading functions"
@@ -123,269 +127,142 @@ local function notify(title, content, dur, subcontent)
 	}
 end
 
--- chat functions 
-local function invis_chat(e)
-	plrs:Chat(e)
-end
+-- chat functions
+local function load_chat_functions()
+	-- script variables
+	local replicated_storage = game:GetService"ReplicatedStorage"
+	local msg_request = replicated_storage.DefaultChatSystemChatEvents.SayMessageRequest
 
-local function bypass_chat()
-	invis_chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-	task.wait()
-	invis_chat("/e ABC")
-	task.wait()
-	invis_chat("le le le le le le le")
-	task.wait()
-	invis_chat("le le le le le")
-	task.wait()
-end
+	-- value
+	local s = nil -- spam/raid msg/symbol
+	local spam_delay = 2.5
 
-local function say_message(msg)
-	bypass_chat()
-	task.wait()
-	say_msg_request:FireServer(msg, "All")
-end
+	-- functions
+	local function invis_chat(e)
+		plrs:Chat(e)
+	end
 
-local function load_russian_bypasser()
-	-- script
-    local plrs = game.Players
-    local plr = plrs.LocalPlayer
-    local mouse = plr:GetMouse()
-    local rs = game:GetService'ReplicatedStorage'
-    local ts = game:GetService'TweenService'
-    local uis = game:GetService'UserInputService'
-    local tcs = game:GetService'TextChatService'
-    local coregui = game:GetService'CoreGui'
-    local oldChat = tcs.ChatVersion == Enum.ChatVersion.LegacyChatService
+	local function bypass_chat()
+		invis_chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+		task.wait()
+		invis_chat("/e ABC")
+		task.wait()
+		invis_chat("le le le le le le le")
+		task.wait()
+		invis_chat("le le le le le")
+		task.wait()
+	end
 
-    -- toggle
-    local dragging
-    local lock
-    local en
+	local function say_msg(msg)
+		msg_request:FireServer(msg, "All")
+	end
 
-    -- settings
-    local startPos = nil
-    local dragStart = nil
-    local dragSpeed = 0.2
+	local Window = Rayfield:CreateWindow({
+		Name = "Chat functions",
+		Icon = 0,
+		LoadingTitle = "LadderBreaker: chat functions",
+		LoadingSubtitle = "By m1kp",
+		Theme = "Default",
+		
+		DisableRayfieldPrompts = false,
+		DisableBuildWarnings = false,
+		
+		ConfigurationSaving = {
+			Enabled = true,
+			FolderName = nil,
+			FileName = "Chat functions (ladder breaker)"
+		},
+		
+		Discord = {
+			Enabled = false,
+			Invite = "noinvitelink",
+			RememberJoins = true
+		},
+		
+		KeySystem = false,
+		KeySettings = {
+			Title = "Untitled",
+			Subtitle = "Key System",
+			Note = "No method of obtaining the key is provided",
+			FileName = "Key",
+			SaveKey = true,
+			GrabKeyFromSite = false,
+			Key = {"Hello"}
+		}
+	})
 
-    -- instance
-    local gui = Instance.new'ScreenGui'
-    local main = Instance.new'Frame'
-    local mini = Instance.new'Frame'
-    local text1 = Instance.new'TextLabel'
-    local text2 = Instance.new'TextLabel'
-    local open = Instance.new'TextButton'
-    local close = Instance.new'TextButton'
-    local toggle = Instance.new'TextButton'
-    local minimiz = Instance.new'TextButton'
-    local lock_btn = Instance.new'TextButton'
-    local BypassTextbox = Instance.new'TextBox'
-    local uic1 = Instance.new'UICorner'
-    local uic2 = Instance.new'UICorner'
-    local uic3 = Instance.new'UICorner'
-    local uic4 = Instance.new'UICorner'
-    local uic5 = Instance.new'UICorner'
-    local uic6 = Instance.new'UICorner'
-    local uic7 = Instance.new'UICorner'
-    local uic8 = Instance.new'UICorner'
-    local uic9 = Instance.new'UICorner'
-    local uic10 = Instance.new'UICorner'
+	local Main = Window:CreateTab("Main", 4483362458)
 
-    -- gui
-    gui.Parent = coregui
-    gui.Name = 'bypass gui'
+	local Bypass = Main:CreateSection("Bypass")
 
-    main.Parent = gui
-    main.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    main.BorderSizePixel = 0
-    main.Position = UDim2.new(0, 0, 0, 50)
-    main.Size = UDim2.new(0, 289, 0, 94)
-    main.Name = 'main frame'
+	local ToggleBypass = Main:CreateToggle({
+		Name = "Chat bypass",
+		CurrentValue = false,
+		Flag = "BypassToggleFlag",
+		Callback = function(bool)
+			if bool then repeat bypass_chat() until bool == false end
+		end,
+	})
 
-    mini.Parent = gui
-    mini.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    mini.BorderSizePixel = 0
-    mini.Position = UDim2.new(0, 0, 0, 0)
-    mini.Size = UDim2.new(0, 50, 0, 19)
-    mini.Name = 'min frame'
-    mini.Visible = false
+	local InputChat = Main:CreateInput({
+		Name = "Chat",
+		PlaceholderText = "Input",
+		RemoveTextAfterFocusLost = true,
+		Callback = function(input)
+			say_msg(input)
+		end,
+	})
 
-    text1.Parent = main
-    text1.TextColor3 = Color3.fromRGB(240, 240, 240)
-    text1.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    text1.Position = UDim2.new(0, 0, 0.019, 0)
-    text1.Size = UDim2.new(0, 157, 0, 17)
-    text2.BorderSizePixel = 0
-    text1.Text = 'русский chat bypass'
-    text1.Name = 'text1'
+	local Raid = Main:CreateSection("Raid")
 
-    close.Parent = main
-    close.TextColor3 = Color3.fromRGB(240, 240, 240)
-    close.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    close.Position = UDim2.new(0.884, 0, 0, 0)
-    close.Size = UDim2.new(0, 33, 0, 18)
-    close.BorderSizePixel = 0
-    close.Text = 'X'
+	local bool1, bool2
+	local ToggleRaid = Main:CreateToggle({
+		Name = "Chat raid",
+		CurrentValue = false,
+		Flag = "RaidToggleFlag",
+		Callback = function(bool)
+			bool1 = bool
+			if bool1 then
+				repeat
+					say_msg(s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s..s)
+					wait(2.5)
+				until bool1 == false
+			end
+		end,
+	})
 
-    minimiz.Parent = main
-    minimiz.TextColor3 = Color3.fromRGB(240, 240, 240)
-    minimiz.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    minimiz.Position = UDim2.new(0.768, 0, 0, 0)
-    minimiz.Size = UDim2.new(0, 33, 0, 18)
-    minimiz.BorderSizePixel = 0
-    minimiz.Text = '-'
+	local MySpamToggle = Main:CreateToggle({
+		Name = "My spam",
+		CurrentValue = false,
+		Flag = "MySpamToggleFlag",
+		Callback = function(bool)
+			bool2 = bool
+			if bool2 then
+				repeat
+					say_msg(s)
+					wait(spam_delay)
+				until bool2 == false
+			end
+		end,
+	})
 
-    toggle.Parent = main
-    toggle.BackgroundColor3 = Color3.fromRGB(40, 0, 40)
-    toggle.TextColor3 = Color3.fromRGB(240, 240, 240)
-    toggle.Position = UDim2.new(0.024, 0, 0.251, 0)
-    toggle.Size = UDim2.new(0, 215, 0, 20)
-    toggle.BorderSizePixel = 0
-    toggle.Text = 'включить'
-    toggle.Name = 'toggle'
+	local InputSpamRaid = Main:CreateInput({
+		Name = "Spam/raid message",
+		PlaceholderText = "для рейда один символ пж",
+		RemoveTextAfterFocusLost = false,
+		Callback = function(input)
+			s = input
+		end,
+	})
 
-    lock_btn.Parent = main
-    lock_btn.BackgroundColor3 = Color3.fromRGB(40, 0, 40)
-    lock_btn.TextColor3 = Color3.fromRGB(240, 240, 240)
-    lock_btn.Position = UDim2.new(0.797, 0, 0.254, 0)
-    lock_btn.Size = UDim2.new(0, 53, 0, 20)
-    lock_btn.BorderSizePixel = 0
-    lock_btn.Text = 'lock'
-    lock_btn.Name = 'toggle'
-
-    BypassTextbox.Parent = main
-    BypassTextbox.BackgroundColor3 = Color3.fromRGB(40, 0, 40)
-    BypassTextbox.TextColor3 = Color3.fromRGB(240, 240, 240)
-    BypassTextbox.Position = UDim2.new(0.024, 0, 0.534, 0)
-    BypassTextbox.Size = UDim2.new(0, 277, 0, 34)
-    BypassTextbox.BorderSizePixel = 0
-    BypassTextbox.PlaceholderText = 'пиши сюда..'
-    BypassTextbox.Name = 'BypassTextbox'
-    BypassTextbox.Text = ''
-
-    open.Parent = mini
-    open.TextColor3 = Color3.fromRGB(240, 240, 240)
-    open.BackgroundColor3 = Color3.fromRGB(50, 0, 50)
-    open.Position = UDim2.new(0, 0, 0, 0)
-    open.Size = UDim2.new(0, 50, 0, 18)
-    open.BorderSizePixel = 0
-    open.Text = 'open'
-
-    uic1.Parent = main
-    uic2.Parent = text1
-    uic3.Parent = text2
-    uic4.Parent = toggle
-    uic5.Parent = BypassTextbox
-    uic6.Parent = lock_btn
-    uic7.Parent = close
-    uic8.Parent = minimiz
-    uic9.Parent = open
-    uic10.Parent = mini
-
-    -- work
-    minimiz.MouseButton1Click:Connect(function() 
-        minimiz.Text = '-'
-        main.Visible = false
-        mini.Visible = true
-        open.Visible = true
-    end)
-
-    open.MouseButton1Click:Connect(function() 
-        main.Visible = true
-        minimiz.Text = '-'
-        open.Visible = false
-        mini.Visible = false
-    end)
-
-    close.MouseButton1Click:Connect(function() 
-        for i, gui in pairs(game.CoreGui:GetDescendants()) do
-            if gui.Name == 'bypass gui' then
-                gui:Destroy()
-            end
-        end
-    end)
-
-    lock_btn.MouseButton1Click:Connect(function() 
-        if lock_btn.Text == 'lock' then
-            lock = true
-            lock_btn.Text = 'unlock'
-        else
-            lock = false
-            lock_btn.Text = 'lock'
-        end
-    end)
-
-    toggle.MouseButton1Click:Connect(function()
-        if toggle.Text == 'включить' then
-            en = true
-            toggle.Text = 'выключить'
-            repeat task.wait()
-                bypass_chat()
-            until en == false
-        else
-            en = false
-            toggle.Text = 'включить'
-        end
-    end)
-
-    BypassTextbox.FocusLost:Connect(function()
-        bypass_chat()
-        if oldChat then
-            rs.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(BypassTextbox.Text, 'All')
-        else
-            tcs.TextChannels.RBXGeneral:SendAsync(BypassTextbox.Text)
-        end
-        BypassTextbox.Text = ''
-    end)
-
-    mouse.KeyDown:Connect(function(key) 
-        if key == '/' then
-            task.wait()
-            BypassTextbox:CaptureFocus()
-        end
-    end)
-
-    -- drag
-    local function updateInput(inp)
-        local e = inp.Position - dragStart
-        local pos = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + e.X, 
-            startPos.Y.Scale, 
-            startPos.Y.Offset + e.Y
-        )
-        ts:Create(main, TweenInfo.new(dragSpeed), {Position = pos}):Play()
-        ts:Create(open, TweenInfo.new(dragSpeed), {Position = pos}):Play()
-    end
-
-    main.InputBegan:Connect(function(inp)
-        if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = inp.Position
-            startPos = main.Position
-            inp.Changed:Connect(function()
-                if inp.UserInputState == Enum.UserInputState.End then dragging =  false end
-            end)
-        end 
-    end)
-
-    open.InputBegan:Connect(function(inp)
-        if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = inp.Position
-            startPos = main.Position
-            inp.Changed:Connect(function()
-                if inp.UserInputState == Enum.UserInputState.End then dragging =  false end
-            end)
-        end 
-    end)
-
-    uis.InputChanged:Connect(function(inp)
-        if not lock then
-            if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then
-                if dragging then updateInput(inp) end
-            end
-        end
-    end)
+	local InputDelay = Main:CreateInput({
+		Name = "Delay",
+		PlaceholderText = "Input",
+		RemoveTextAfterFocusLost = true,
+		Callback = function(input)
+			spam_delay = input
+		end,
+	})
 end
 
 -- destroy thing function
@@ -437,7 +314,7 @@ end
 
 local function anti_spy() 
 	while anti_spy_en do
-		invis_chat("ANTI CHAT SPY")
+		invis_chat("["..name.."]: ANTI CHAT SPY")
 		task.wait(0.1)
 	end
 end
@@ -735,7 +612,7 @@ local function load_dmo()
 		Character = Window:CreateTab{Title = "Player", Icon = "user-cog"},
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
-		Changelog = Window:CreateTab{Title = "Changelog sex", Icon = "mail-plus"},
+		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
 		Server = Window:CreateTab{Title = "Server", Icon = "server"}
 	}
 	
@@ -781,8 +658,7 @@ local function load_dmo()
     Title = "Chat functions",
     Description = "",
     Callback = function()
-        load_russian_bypasser()
-		-- сделаю отдельный скрипт с функциями чата
+        load_chat_functions()
     end}
 	
 	-- tp tab
@@ -1022,6 +898,14 @@ local function load_dmo()
 		end)
 	end)
 	
+	local platformStand = Tabs.Character:CreateToggle("platformStand_Flag", {Title = "platform stand", Default = false})
+	platformStand:OnChanged(function(bool)
+		platform_stand_en = bool
+		user_input_service.JumpRequest:Connect(function()
+			if platform_stand then plr.Character.Humanoid.PlatformStand = true else plr.Character.Humanoid.PlatformStand = false end
+		end)
+	end)
+	
 	local GravSlider = Tabs.Character:CreateSlider("GravSlider_Flag", {
 		Title = "Gravity",
 		Description = "",
@@ -1168,11 +1052,6 @@ local function load_dmo()
 			update_clocktime(value)
 		end
 	})
-
-	local ChangelogParagraphV6 = Tabs.Changelog:CreateParagraph("Paragraph", {
-	    Title = "v6",
-	    Content = "Added:\n auto hide dolce milk,\nauto farm dolce milk;\nRewrited:\nLadderBreaker script"
-	})
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
@@ -1251,7 +1130,7 @@ local function load_premium()
 	Title = "Chat functions",
 	Description = "",
 	Callback = function()
-		load_russian_bypasser()
+		load_chat_functions()
 		-- сделаю отдельный скрипт с функциями чата
 	end}
 	
@@ -1573,6 +1452,14 @@ local function load_premium()
 		inf_jump_en = bool
 		user_input_service.JumpRequest:Connect(function()
 			if inf_jump_en then plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping") end
+		end)
+	end)
+	
+	local platformStand = Tabs.Character:CreateToggle("platformStand_Flag", {Title = "platform stand", Default = false})
+	platformStand:OnChanged(function(bool)
+		platform_stand_en = bool
+		user_input_service.JumpRequest:Connect(function()
+			if platform_stand then plr.Character.Humanoid.PlatformStand = true else plr.Character.Humanoid.PlatformStand = false end
 		end)
 	end)
 	
