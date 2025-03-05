@@ -1,5 +1,27 @@
 print"[LadderBreaker]: Starting"
 
+local bindable_function = Instance.new("BindableFunction")
+
+bindable_function.OnInvoke = function(button)
+	if button == "Why?" then
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Libraries",
+			Text = "Fluent and Rayfield UIs are hard to load",
+			Duration = 10,
+			Button1 = "Ok",
+		})
+	end
+end
+
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Loading LadderBreaker",
+    Text = "It may take 15-20 seconds",
+    Duration = 10,
+    Callback = bindable_function,
+    Button1 = "Ok",
+    Button2 = "Why?",
+})
+
 -- premium
 local name = game.Players.LocalPlayer.Name
 local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"}
@@ -319,17 +341,19 @@ end
 
 local function anti_void() 
 	if anti_void_en then
-		workspace.FallenPartsDestroyHeight = -math.huge
-		while anti_void_en do
-			if plr.Character.Humanoid.Health > 0 then
-				if plr.Character.HumanoidRootPart and plr.Character.HumanoidRootPart.Position.Y < -500 and anti_void_en then
-					tp(CFrame.new(80, 147, -247))
-					task.wait()
-					notify("Theres a staarmaan waiting in the sky", "I will sav your next time <3", 3)
+		pcall(funtion()
+			workspace.FallenPartsDestroyHeight = -math.huge
+			while anti_void_en do
+				if plr.Character and plr.Character.Humanoid.Health > 0 then
+					if plr.Character.HumanoidRootPart and plr.Character.HumanoidRootPart.Position.Y < -500 and anti_void_en then
+						tp(CFrame.new(80, 147, -247))
+						task.wait()
+						notify("Theres a staarmaan waiting in the sky", "I will save you next time <3", 3)
+					end
 				end
+				task.wait(0.1)
 			end
-			task.wait(0.1)
-		end
+		end)
 	else workspace.FallenPartsDestroyHeight = -100 end
 end
 
