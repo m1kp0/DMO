@@ -941,7 +941,7 @@ local function load_dmo()
 	local AntiAFK = Tabs.Defense:CreateToggle("AntiAFK_Flag", {Title = "Anti AFK", Default = false})
 	AntiAFK:OnChanged(function(bool)
 		if bool then
-			anti_afk_en = p.Idled:Connect(function()
+			anti_afk_en = plr.Idled:Connect(function()
 				virtual_user:CaptureController()
 				virtual_user:ClickButton2(Vector2.new())
 			end)
@@ -1354,7 +1354,7 @@ local function load_premium()
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				workspace:GetChildren()[19].Part.TeleportPart.CanTouch = false
 				for i = 1, 3 do
-					task.wait(0.1)
+					task.wait(0.2)
 					tp(CFrame.new(-245.082535, 265.335266, -2826.54883, -0.985214949, 3.41150885e-09, -0.171322852, -1.9914264e-08, 1, 1.34432383e-07, 0.171322852, 1.35856567e-07, -0.985214949))
 				end
 				tp(old_position)
@@ -1362,7 +1362,7 @@ local function load_premium()
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				workspace.Damage["70"].CanTouch = false
 				for i = 1, 3 do
-					task.wait(0.1)
+					task.wait(0.2)
 					tp(CFrame.new(65.8883896, 95.9391251, -407.936798, 0.99227649, -5.69515706e-08, 0.124046057, 5.96924039e-08, 1, -1.83786479e-08, -0.124046057, 2.56413077e-08, 0.99227649))
 				end
 				tp(old_position)
@@ -1377,14 +1377,14 @@ local function load_premium()
 			if bang_defense == "Kick" then
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				for i = 1, 3 do
-					task.wait(0.1)
+					task.wait(0.2)
 					tp(CFrame.new(-244.424606, 265.321747, -2826.51587, 0.981782734, 2.22285195e-08, 0.190007031, -4.74679318e-08, 1, 1.2828302e-07, -0.190007031, -1.3496529e-07, 0.981782734))
 				end
 				tp(old_position)
 			else
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				for i = 1, 3 do
-					task.wait(0.1)
+					task.wait(0.2)
 					tp(CFrame.new(65.9753799, 90.9765091, -407.554199, -0.998261631, -0.00710663432, -0.0585079715, 7.12106774e-09, 0.992703795, -0.120578274, 0.0589379929, -0.120368667, -0.990978181))
 				end
 				tp(old_position)
@@ -1392,7 +1392,7 @@ local function load_premium()
 		end
 	}
 	
-	local BangDefenseDrop = Tabs.Main:CreateDropdown("BangDefenseDrop_Flag", {
+	local BangDefenseDrop = Tabs.Defense:CreateDropdown("BangDefenseDrop_Flag", {
 		Title = "Bang defense",
 		Values = {"Kill", "Kick"},
 		Multi = false,
@@ -1457,7 +1457,7 @@ local function load_premium()
 	local AntiAFK = Tabs.Defense:CreateToggle("AntiAFK_Flag", {Title = "Anti AFK", Default = false})
 	AntiAFK:OnChanged(function(bool)
 		if bool then
-			anti_afk_en = p.Idled:Connect(function()
+			anti_afk_en = plr.Idled:Connect(function()
 				virtual_user:CaptureController()
 				virtual_user:ClickButton2(Vector2.new())
 			end)
