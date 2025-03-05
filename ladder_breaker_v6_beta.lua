@@ -1374,7 +1374,11 @@ local function load_premium()
 		Callback = function()
 			if bang_defense == "Kick" then
 				local old_position = plr.Character.HumanoidRootPart.CFrame
-				workspace:GetChildren()[19].Part.TeleportPart.CanTouch = false
+				for i, part in pairs(workspace.Damage:GetChildren()) do
+					if part:IsA("Part") then
+						part.CanTouch = false
+					end
+				end
 				for i = 1, 5 do
 					task.wait(0.2)
 					tp(CFrame.new(-245.082535, 265.335266, -2826.54883, -0.985214949, 3.41150885e-09, -0.171322852, -1.9914264e-08, 1, 1.34432383e-07, 0.171322852, 1.35856567e-07, -0.985214949))
@@ -1382,7 +1386,11 @@ local function load_premium()
 				tp(old_position)
 			else
 				local old_position = plr.Character.HumanoidRootPart.CFrame
-				workspace.Damage["70"].CanTouch = false
+				for i, part in pairs(workspace:GetDescendants()) do
+					if part:IsA("Part") and part.Name == "TeleportPart" then
+						part.CanTouch = false
+					end
+				end
 				task.wait(0.1)
 				for i = 1, 5 do
 					task.wait(0.2)
