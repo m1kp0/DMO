@@ -2,7 +2,7 @@ print"[LadderBreaker]: Starting"
 
 -- premium
 local name = game.Players.LocalPlayer.Name
-local premium_users = {"abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"} -- "Yaros1979",
+local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"}
 local premium_user = false
 
 -- script
@@ -12,7 +12,9 @@ local plrUserId = plr.UserId
 local cam = workspace.Camera
 local starter_gui = game:GetService"StarterGui"
 local run_service = game:GetService"RunService"
+local virtual_user = game:GetService"VirtualUser"
 local tween_service = game:GetService"TweenService"
+local user_input_service = game:GetService"UserInputService"
 local replicated_storage = game:GetService"ReplicatedStorage"
 local say_msg_request = replicated_storage:WaitForChild"DefaultChatSystemChatEvents":WaitForChild"SayMessageRequest"
 local get_msg = replicated_storage:WaitForChild"DefaultChatSystemChatEvents":WaitForChild"OnMessageDoneFiltering"
@@ -33,12 +35,17 @@ local saved_checkpoint
 local break_ladder_en = false
 local break_ladder_walking_en = false
 local noclip_en = false
-local chat_bypass_en = false
 local anti_spy_en = false
-local auto_drop_dolce_milk_en = false
-local auto_grab_dolce_milk_en = false
-local osk_spam_en = false
-local dolce_milk_dick_en = false
+local my_ladder_en = false
+local anti_void_en = false
+local anti_sit_en = false
+local auto_drop_dolce_en = false
+local auto_grab_dolce_en = false
+local farm_dolce_en = false
+local dolce_dick_en = false
+local loop_speed_en = false
+local inf_jump_en = false
+local anti_afk_en = nil
 
 -- chat spy variables
 local instance = (_G.chatSpyInstance or 0) + 1
@@ -54,9 +61,10 @@ spy_properties = {
 _G.chatSpyInstance = instance
 
 -- library
-print"[LadderBreaker]: Loading UI-Library (if you are using a free pc executor, it may take 10-15 seconds)"
+print"[LadderBreaker]: Loading UI-Library (it may take 10-15 seconds)"
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 print"[LadderBreaker]: Loaded UI-Library: Fluent"
+
 -- chat spy
 print"[LadderBreaker]: Loading functions"
 
@@ -104,6 +112,8 @@ local function update_walk_speed(ws) plr.Character.Humanoid.WalkSpeed = ws end
 local function update_jump_power(jp) plr.Character.Humanoid.JumpPower = jp end
 local function tp(cframe) plr.Character.HumanoidRootPart.CFrame = cframe end
 
+-- clocktime function
+local function update_clocktime(time) game.Lighting.ClockTime = time end
 -- notify function
 local function notify(title, content, dur, subcontent)
 	Library:Notify{
@@ -412,47 +422,45 @@ local function create_ladder_for_breaking(bool)
 end
 
 -- defense functions
-local function anti_blur(bool)
-	if bool then 
+local function anti_blur()
+	if anti_blur_en then 
 		cam.Blur.Enabled = false
 	else
 		cam.Blur.Enabled = true
 	end
 end
 
-local function anti_sit(bool)
+local function anti_sit()
 	plr.Character.Humanoid.Seated:Connect(function()
-		if bool then 
-			plr.Character.Humanoid.Sit = false 
-		end
+		if anti_sit_en then plr.Character.Humanoid.Sit = false end
 	end)
 end
 
 local function anti_spy() 
-	if anti_spy_en then
-		repeat
-			invis_chat("["..name.."]: ANTI CHAT SPY")
-			task.wait(0.1)
-		until anti_spy_en == false
+	while anti_spy_en do
+		invis_chat("["..name.."]: ANTI CHAT SPY")
+		task.wait(0.1)
 	end
 end
 
-local function anti_void(bool) 
-	if bool then
+local function anti_void() 
+	if anti_void_en then
 		workspace.FallenPartsDestroyHeight = -math.huge
-		repeat
-			if plr.Character.HumanoidRootPart and plr.Character.HumanoidRootPart.Position.Y < -500 and bool then
-				tp(CFrame.new(80, 147, -247))
-				task.wait()
-				notify("Theres a staarmaan waiting in the sky", "I will sav your next time <3", 3)
+		while anti_void_en do
+			if plr.Character.Humanoid.Health > 0 then
+				if plr.Character.HumanoidRootPart and plr.Character.HumanoidRootPart.Position.Y < -500 and anti_void_en then
+					tp(CFrame.new(80, 147, -247))
+					task.wait()
+					notify("Theres a staarmaan waiting in the sky", "I will sav your next time <3", 3)
+				end
 			end
 			task.wait(0.1)
-		until bool == false
+		end
 	else workspace.FallenPartsDestroyHeight = -100 end
 end
 
-local function create_ladder_for_defense(bool)
-	if bool then
+local function create_ladder_for_defense()
+	if my_ladder_en then
 		for i, p in pairs(workspace.Stairs:GetDescendants()) do
 			if p:IsA"Part" then
 				local defense_stair = Instance.new("Part", workspace)
@@ -477,14 +485,64 @@ local function checkpoint(save_or_delete)
 			task.wait(0.2)
 			tp(CFrame.new(saved_checkpoint))
 		end)
-	else
+	elseif save_or_delete == "delete" then
 		saved_checkpoint = nil
 	end
 end
 
-local function drop_thing(thing)
-	for i, v in pairs(plr.Character:GetChildren()) do
-		if v.Name == thing then v.Parent = workspace end
+local function drop_things(thing)
+	for i, tool in pairs(plr.Backpack:GetChildren()) do
+		if tool.Parent == plr.Backpack then
+			tool.Parent = plr.Character
+			task.wait()
+			tool.Parent = workspace
+		end
+		if tool.Parent == plr.Character then
+			tool.Parent = workspace
+			task.wait()
+		end
+	end
+end
+
+local function auto_drop_things(thing)
+	for i, tool in pairs(plr.Backpack:GetChildren()) do
+		if plr.Character.Humanoid.Health ~= 0 then
+			if tool.Parent == plr.Backpack and auto_drop_dolce_en then
+				tool.Parent = plr.Character
+				task.wait()
+				tool.Parent = workspace
+			end
+			if tool.Parent == plr.Character and auto_drop_dolce_en then
+				tool.Parent = workspace
+				task.wait()
+			end
+		end
+	end
+end
+
+local function grab_things(thing)
+	while run_service.RenderStepped:Wait() and auto_grab_dolce_en do
+		task.wait()
+		for i, d in pairs(workspace:GetChildren()) do
+			if d.Name == thing and auto_grab_dolce_en then 
+				if plr.Character.Humanoid.Health ~= 0 then d.Handle.CFrame = CFrame.new(plr.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0)) end
+			end
+		end
+	end
+end
+
+local function farm_things(thing)
+
+	while farm_dolce_en do
+		task.wait()
+		if plr.Character and plr.Character:WaitForChild("Humanoid").Health ~= 0 and farm_dolce_en then
+			task.wait(0.2)
+			tp(CFrame.new(-241, 265, -2804))
+			task.wait(0.2)
+			for i, tool in pairs(plr.Backpack:GetChildren()) do drop_things("Dolce Milk") end
+			plr.Character:WaitForChild("Humanoid").Health = 0
+		end
+		task.wait()
 	end
 end
 
@@ -648,9 +706,9 @@ local function load_dmo()
 		Title = "LadderBreaker",
 		SubTitle = "DMO",
 		TabWidth = 160,
-		Size = UDim2.fromOffset(1200, 800),
+		Size = UDim2.fromOffset(1500, 1000),
 		Resize = true,
-		MinSize = Vector2.new(1200, 800),
+		MinSize = Vector2.new(1500, 1000),
 		Acrylic = true,
 		Theme = "Dark",
 		MinimizeKey = Enum.KeyCode.RightControl
@@ -658,7 +716,7 @@ local function load_dmo()
 	
 	-- options
 	local Options = Library.Options	-- Options.MyToggle:SetValue(false)
-
+	
 	-- tabs
 	local Tabs = {
 		Main = Window:CreateTab{Title = "Main", Icon = "phosphor-steps"},
@@ -671,13 +729,13 @@ local function load_dmo()
 		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
 		Server = Window:CreateTab{Title = "Server", Icon = "server"}
 	}
-
+	
 	-- main tab
 	local BreakLadderToggle = Tabs.Main:CreateToggle("BreakLadderToggle_Flag", {Title = "Break Ladder", Default = false})
-	BreakLadderToggle:OnChanged(function()
-		break_ladder_en = Options.BreakLadderToggle_Flag.Value
-		noclip_en = Options.BreakLadderToggle_Flag.Value
-		create_ladder_for_breaking(Options.BreakLadderToggle_Flag.Value)
+	BreakLadderToggle:OnChanged(function(bool)
+		break_ladder_en = bool
+		noclip_en = bool
+		create_ladder_for_breaking(bool)
 		if noclip_en then
 			noclipping = run_service.Stepped:Connect(noclip_for_breaking)
 		else
@@ -687,29 +745,29 @@ local function load_dmo()
 		end
 		break_ladder()
 	end)
-
+	
 	-- chat tab
 	local SpyChat = Tabs.Chat:CreateToggle("SpyChat_Flag", {Title = "Chat Spy", Default = false})
 	SpyChat:OnChanged(function(bool)
 		spy_en = bool
 	end)
-
+	
 	local PublicSpy = Tabs.Chat:CreateToggle("PublicSpy_Flag", {Title = "Public Spy", Default = false})
 	PublicSpy:OnChanged(function(bool)
 		public_spy_en = bool
 	end)
-
+	
 	local SpyOnMyself = Tabs.Chat:CreateToggle("SpyOnMyself_Flag", {Title = "Spy On Myself", Default = false})
 	SpyOnMyself:OnChanged(function(bool)
 		spy_on_myself_en = bool
 	end)
-
+	
 	local AntiSpy = Tabs.Chat:CreateToggle("AntiSpy_Flag", {Title = "Anti chat spy", Default = false})
 	AntiSpy:OnChanged(function(bool)
 		anti_spy_en = bool
 		anti_spy()
 	end)
-
+	
 	Tabs.Chat:CreateButton{
     Title = "Chat functions",
     Description = "",
@@ -717,7 +775,7 @@ local function load_dmo()
         load_russian_bypasser()
 		-- сделаю отдельный скрипт с функциями чата
     end}
-
+	
 	-- tp tab
 	Tabs.TP:CreateButton{
 		Title = "Spawn",
@@ -726,7 +784,7 @@ local function load_dmo()
 			tp(CFrame.new(91, 3, -26))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Top of the ladder",
 		Description = "",
@@ -734,7 +792,7 @@ local function load_dmo()
 			tp(CFrame.new(80, 147, -247))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Bottom of the ladder",
 		Description = "",
@@ -742,7 +800,7 @@ local function load_dmo()
 			tp(CFrame.new(93, 3, -232))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Green zone",
 		Description = "",
@@ -750,7 +808,7 @@ local function load_dmo()
 			tp(CFrame.new(70, 100, -469))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Pink zone",
 		Description = "",
@@ -758,7 +816,7 @@ local function load_dmo()
 			tp(CFrame.new(3, 188, -1188))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Purple zone",
 		Description = "",
@@ -774,7 +832,7 @@ local function load_dmo()
 			tp(CFrame.new(-82, 282, -1824))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Dark-yellow zone",
 		Description = "",
@@ -782,7 +840,7 @@ local function load_dmo()
 			tp(CFrame.new(-122, 264, -2145))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "Blue zone",
 		Description = "",
@@ -790,7 +848,7 @@ local function load_dmo()
 			tp(CFrame.new(-204, 264, -2620))
 		end
 	}
-
+	
 	Tabs.TP:CreateButton{
 		Title = "End",
 		Description = "",
@@ -798,44 +856,823 @@ local function load_dmo()
 			tp(CFrame.new(-238, 265, -2809))
 		end
 	}
-
+	
 	-- defense tab
 	local AntiBlur = Tabs.Defense:CreateToggle("AntiBlur_Flag", {Title = "Anti blur", Default = false})
 	AntiBlur:OnChanged(function(bool)
-		anti_blur(bool)
+		anti_blur_en = bool
+		anti_blur()
 	end)
-
+	
+	local AntiSit = Tabs.Defense:CreateToggle("AntiSit_Flag", {Title = "Anti sit", Default = false})
+	AntiSit:OnChanged(function(bool)
+		anti_sit_en = bool
+		anti_sit()
+	end)
+	
 	local AntiKillParts = Tabs.Defense:CreateToggle("AntiKillParts_Flag", {Title = "Anti kill parts", Default = false})
 	AntiKillParts:OnChanged(function(bool)
 		pcall(function()
 			for i, part in pairs(workspace.Damage:GetChildren()) do
-				if bool then part.CanTouch = false else part.CanTouch = true end
+				if part:IsA("Part") then
+					if bool then part.CanTouch = false else part.CanTouch = true end
+				end
 			end
 		end)
 	end)
-
-	local AntiSit = Tabs.Defense:CreateToggle("AntiSit_Flag", {Title = "Anti Sit", Default = false})
-	AntiSit:OnChanged(function(bool)
-		anti_sit(bool)
+	
+	local AntiVoid = Tabs.Defense:CreateToggle("AntiVoid_Flag", {Title = "Anti void", Default = false})
+	AntiVoid:OnChanged(function(bool)
+		anti_void_en = bool
+		anti_void()
 	end)
-
+	
+	local CreateMyLadder = Tabs.Defense:CreateToggle("CreateMyLadder_Flag", {Title = "Create my ladder", Default = false})
+	CreateMyLadder:OnChanged(function(bool)
+		my_ladder_en = bool
+		create_ladder_for_defense()
+	end)
+	
+	Tabs.Defense:CreateButton{
+		Title = "Save checkpoint",
+		Description = "",
+		Callback = function()
+			checkpoint("save")
+		end
+	}
+	
+	Tabs.Defense:CreateButton{
+		Title = "Delete checkpoint",
+		Description = "",
+		Callback = function()
+			checkpoint("delete")
+		end
+	}
+	
+	Tabs.Defense:CreateButton{
+		Title = "Drop dolce milks",
+		Description = "",
+		Callback = function()
+			drop_things("Dolce Milk")
+		end
+	}
+	
+	local AutoDropDolceMilk = Tabs.Defense:CreateToggle("AutoDropDolceMilk_Flag", {Title = "Auto drop dolce milk", Default = false})
+	AutoDropDolceMilk:OnChanged(function(bool)
+		auto_drop_dolce_en = bool
+		while auto_drop_dolce_en do
+			drop_things("Dolce Milk")
+			task.wait(0.01)
+		end
+	end)
+	
+	local AutoGrabDolceMilk = Tabs.Defense:CreateToggle("AutoGrabDolceMilk_Flag", {Title = "Auto grab dolce milk", Default = false})
+	AutoGrabDolceMilk:OnChanged(function(bool)
+		auto_grab_dolce_en = bool
+		grab_things("Dolce Milk")
+	end)
+	
+	local AutoFarmDolceMilk = Tabs.Defense:CreateToggle("AutoFarmDolceMilk_Flag", {Title = "Auto farm dolce milk", Default = false})
+	AutoFarmDolceMilk:OnChanged(function(bool)
+		farm_dolce_en = bool
+		farm_things("Dolce Milk")
+	end)
+	
+	local AntiAFK = Tabs.Defense:CreateToggle("AntiAFK_Flag", {Title = "Anti AFK", Default = false})
+	AntiAFK:OnChanged(function(bool)
+		if bool then
+			anti_afk_en = p.Idled:Connect(function()
+				virtual_user:CaptureController()
+				virtual_user:ClickButton2(Vector2.new())
+			end)
+		else
+			if anti_afk_en ~= nil then
+				anti_afk_en:Disconnect()
+			end
+		end
+	end)
+	
+	-- player tab
+	local WSSlider = Tabs.Character:CreateSlider("WSSlider_Flag", {
+		Title = "Speed",
+		Description = "",
+		Default = plr.Character.Humanoid.WalkSpeed,
+		Min = 0,
+		Max = 200,
+		Rounding = 1,
+		Callback = function(value)
+			update_walk_speed(value)
+		end
+	})
+	
+	local WSInput = Tabs.Character:CreateInput("WSInput_Flag", {
+		Title = "Speed",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			WSSlider:SetValue(value)
+		end
+	})
+	
+	local JPSlider = Tabs.Character:CreateSlider("JPSlider_Flag", {
+		Title = "Jump power",
+		Description = "",
+		Default = plr.Character.Humanoid.JumpPower,
+		Min = 0,
+		Max = 500,
+		Rounding = 1,
+		Callback = function(value)
+			update_jump_power(value)
+		end
+	})
+	
+	local JPInput = Tabs.Character:CreateInput("JPInput_Flag", {
+		Title = "Jump power",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			JPSlider:SetValue(value)
+		end
+	})
+	
+	local inf_jump = Tabs.Character:CreateToggle("inf_jump_Flag", {Title = "Infinite jumps", Default = false})
+	inf_jump:OnChanged(function(bool)
+		inf_jump_en = bool
+		user_input_service.JumpRequest:Connect(function()
+			if inf_jump_en then plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping") end
+		end)
+	end)
+	
+	local GravSlider = Tabs.Character:CreateSlider("GravSlider_Flag", {
+		Title = "Gravity",
+		Description = "",
+		Default = workspace.Gravity,
+		Min = 0,
+		Max = 1000,
+		Rounding = 2,
+		Callback = function(value)
+			update_gravity(value)
+		end
+	})
+	
+	local GravInput = Tabs.Character:CreateInput("GravInput_Flag", {
+		Title = "Set gravity",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			GravSlider:SetValue(value)
+		end
+	})
+	
+	local FOVSlider = Tabs.Character:CreateSlider("FOVSlider_Flag", {
+		Title = "Field of view",
+		Description = "",
+		Default = cam.FieldOfView,
+		Min = 0,
+		Max = 1000,
+		Rounding = 1,
+		Callback = function(value)
+			update_field_of_view(value)
+		end
+	})
+	
+	local FOVInput = Tabs.Character:CreateInput("FOVInput_Flag", {
+		Title = "Jump power",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			FOVlider:SetValue(value)
+		end
+	})
+	
+	-- script tab
+	Tabs.Scripts:CreateButton{
+		Title = "Infinite Yield REBORN",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kpe02/scripts/refs/heads/main/osk.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "System Broken",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/script"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Dex (PC)",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Dex (Mobile)",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Path & Float",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/ONLY-PC_pathing"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Jerk off R6",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Отдельный chat bypass",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/chat_bypass.lua')()
+		end
+	}
+	
+	-- clocktime tab
+	Tabs.ClockTime:CreateButton{
+		Title = "Night",
+		Description = "",
+		Callback = function()
+			update_clocktime(0)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Day",
+		Description = "",
+		Callback = function()
+			update_clocktime(10)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Evening",
+		Description = "",
+		Callback = function()
+			update_clocktime(18)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Morning",
+		Description = "",
+		Callback = function()
+			update_clocktime(6)
+		end
+	}
+	
+	local ClockTimeInput = Tabs.ClockTime:CreateInput("ClockTimeInput_Flag", {
+		Title = "Custom clock time",
+		Default = "10",
+		Placeholder = "Input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			update_clocktime(value)
+		end
+	})
+	
 	-- loaded
-	notify("LadderBreaker Loaded completely", "Version: "..ver.."", 5)
+	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
 	print"[LadderBreaker]: Loaded"
 end
 
 local function load_premium()
+	-- create window
 	local Window = Library:CreateWindow{
 		Title = "LadderBreaker",
 		SubTitle = "Premium",
 		TabWidth = 160,
-		Size = UDim2.fromOffset(1200, 800),
+		Size = UDim2.fromOffset(1500, 1000),
 		Resize = true,
-		MinSize = Vector2.new(1200, 800),
+		MinSize = Vector2.new(1500, 1000),
 		Acrylic = true,
 		Theme = "Dark",
 		MinimizeKey = Enum.KeyCode.RightControl
 	}
+	
+	-- options
+	local Options = Library.Options	-- Options.MyToggle:SetValue(false)
+	
+	-- tabs
+	local Tabs = {
+		Main = Window:CreateTab{Title = "Main", Icon = "phosphor-steps"},
+		Chat = Window:CreateTab{Title = "Chat", Icon = "message-circle-more"},
+		TP = Window:CreateTab{Title = "Teleport", Icon = "cable"},
+		Defense = Window:CreateTab{Title = "Defense", Icon = "shield-check"},
+		Character = Window:CreateTab{Title = "Player", Icon = "user-cog"},
+		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
+		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
+		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
+		Server = Window:CreateTab{Title = "Server", Icon = "server"}
+	}
+	
+	-- main tab
+	local BreakLadderToggle = Tabs.Main:CreateToggle("BreakLadderToggle_Flag", {Title = "Break Ladder", Default = false})
+	BreakLadderToggle:OnChanged(function(bool)
+		break_ladder_en = bool
+		noclip_en = bool
+		create_ladder_for_breaking(bool)
+		if noclip_en then
+			noclipping = run_service.Stepped:Connect(noclip_for_breaking)
+		else
+			if noclipping then
+				noclipping:Disconnect()
+			end
+		end
+		break_ladder()
+	end)
+	
+	-- chat tab
+	local SpyChat = Tabs.Chat:CreateToggle("SpyChat_Flag", {Title = "Chat Spy", Default = false})
+	SpyChat:OnChanged(function(bool)
+		spy_en = bool
+	end)
+	
+	local PublicSpy = Tabs.Chat:CreateToggle("PublicSpy_Flag", {Title = "Public Spy", Default = false})
+	PublicSpy:OnChanged(function(bool)
+		public_spy_en = bool
+	end)
+	
+	local SpyOnMyself = Tabs.Chat:CreateToggle("SpyOnMyself_Flag", {Title = "Spy On Myself", Default = false})
+	SpyOnMyself:OnChanged(function(bool)
+		spy_on_myself_en = bool
+	end)
+	
+	local AntiSpy = Tabs.Chat:CreateToggle("AntiSpy_Flag", {Title = "Anti chat spy", Default = false})
+	AntiSpy:OnChanged(function(bool)
+		anti_spy_en = bool
+		anti_spy()
+	end)
+	
+	Tabs.Chat:CreateButton{
+	Title = "Chat functions",
+	Description = "",
+	Callback = function()
+		load_russian_bypasser()
+		-- сделаю отдельный скрипт с функциями чата
+	end}
+	
+	-- tp tab
+	Tabs.TP:CreateButton{
+		Title = "Spawn",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(91, 3, -26))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Top of the ladder",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(80, 147, -247))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Bottom of the ladder",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(93, 3, -232))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Green zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(70, 100, -469))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Pink zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(3, 188, -1188))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Purple zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(-25, 192, -1534))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Orange zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(-82, 282, -1824))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Dark-yellow zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(-122, 264, -2145))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "Blue zone",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(-204, 264, -2620))
+		end
+	}
+	
+	Tabs.TP:CreateButton{
+		Title = "End",
+		Description = "",
+		Callback = function()
+			tp(CFrame.new(-238, 265, -2809))
+		end
+	}
+	
+	-- defense tab
+	local AntiBlur = Tabs.Defense:CreateToggle("AntiBlur_Flag", {Title = "Anti blur", Default = false})
+	AntiBlur:OnChanged(function(bool)
+		anti_blur_en = bool
+		anti_blur()
+	end)
+	
+	local AntiSit = Tabs.Defense:CreateToggle("AntiSit_Flag", {Title = "Anti sit", Default = false})
+	AntiSit:OnChanged(function(bool)
+		anti_sit_en = bool
+		anti_sit()
+	end)
+	
+	local AntiKillParts = Tabs.Defense:CreateToggle("AntiKillParts_Flag", {Title = "Anti kill parts", Default = false})
+	AntiKillParts:OnChanged(function(bool)
+		pcall(function()
+			for i, part in pairs(workspace.Damage:GetChildren()) do
+				if part:IsA("Part") then
+					if bool then part.CanTouch = false else part.CanTouch = true end
+				end
+			end
+		end)
+	end)
+	
+	local AntiVoid = Tabs.Defense:CreateToggle("AntiVoid_Flag", {Title = "Anti void", Default = false})
+	AntiVoid:OnChanged(function(bool)
+		anti_void_en = bool
+		anti_void()
+	end)
+	
+	Tabs.Defense:CreateButton{
+		Title = "Kill/Kick bang",
+		Description = "",
+		Callback = function()
+			if bang_defense == "Kick" then
+				local old_position = plr.Character.HumanoidRootPart.CFrame
+				workspace:GetChildren()[19].Part.TeleportPart.CanTouch = false
+				for i = 1, 3 do
+					task.wait(0.1)
+					tp(CFrame.new(-245.082535, 265.335266, -2826.54883, -0.985214949, 3.41150885e-09, -0.171322852, -1.9914264e-08, 1, 1.34432383e-07, 0.171322852, 1.35856567e-07, -0.985214949))
+				end
+				tp(old_position)
+			else
+				local old_position = plr.Character.HumanoidRootPart.CFrame
+				workspace.Damage["70"].CanTouch = false
+				for i = 1, 3 do
+					task.wait(0.1)
+					tp(CFrame.new(65.8883896, 95.9391251, -407.936798, 0.99227649, -5.69515706e-08, 0.124046057, 5.96924039e-08, 1, -1.83786479e-08, -0.124046057, 2.56413077e-08, 0.99227649))
+				end
+				tp(old_position)
+			end
+		end
+	}
+	
+	Tabs.Defense:CreateButton{
+		Title = "Kill/Kick facebang",
+		Description = "",
+		Callback = function()
+			if bang_defense == "Kick" then
+				local old_position = plr.Character.HumanoidRootPart.CFrame
+				for i = 1, 3 do
+					task.wait(0.1)
+					tp(CFrame.new(-244.424606, 265.321747, -2826.51587, 0.981782734, 2.22285195e-08, 0.190007031, -4.74679318e-08, 1, 1.2828302e-07, -0.190007031, -1.3496529e-07, 0.981782734))
+				end
+				tp(old_position)
+			else
+				local old_position = plr.Character.HumanoidRootPart.CFrame
+				for i = 1, 3 do
+					task.wait(0.1)
+					tp(CFrame.new(65.9753799, 90.9765091, -407.554199, -0.998261631, -0.00710663432, -0.0585079715, 7.12106774e-09, 0.992703795, -0.120578274, 0.0589379929, -0.120368667, -0.990978181))
+				end
+				tp(old_position)
+			end
+		end
+	}
+	
+	local BangDefenseDrop = Tabs.Main:CreateDropdown("BangDefenseDrop_Flag", {
+		Title = "Bang defense",
+		Values = {"Kill", "Kick"},
+		Multi = false,
+		Default = "Kill",
+	})
+	
+	BangDefenseDrop:OnChanged(function(value)
+		local bang_defense = value
+	end)
+	
+	local CreateMyLadder = Tabs.Defense:CreateToggle("CreateMyLadder_Flag", {Title = "Create my ladder", Default = false})
+	CreateMyLadder:OnChanged(function(bool)
+		my_ladder_en = bool
+		create_ladder_for_defense()
+	end)
+	
+	Tabs.Defense:CreateButton{
+		Title = "Save checkpoint",
+		Description = "",
+		Callback = function()
+			checkpoint("save")
+		end
+	}
+	
+	Tabs.Defense:CreateButton{
+		Title = "Delete checkpoint",
+		Description = "",
+		Callback = function()
+			checkpoint("delete")
+		end
+	}
+	
+	Tabs.Defense:CreateButton{
+		Title = "Drop dolce milks",
+		Description = "",
+		Callback = function()
+			drop_things("Dolce Milk")
+		end
+	}
+	
+	local AutoDropDolceMilk = Tabs.Defense:CreateToggle("AutoDropDolceMilk_Flag", {Title = "Auto drop dolce milk", Default = false})
+	AutoDropDolceMilk:OnChanged(function(bool)
+		auto_drop_dolce_en = bool
+		while auto_drop_dolce_en do
+			drop_things("Dolce Milk")
+			task.wait(0.01)
+		end
+	end)
+	
+	local AutoGrabDolceMilk = Tabs.Defense:CreateToggle("AutoGrabDolceMilk_Flag", {Title = "Auto grab dolce milk", Default = false})
+	AutoGrabDolceMilk:OnChanged(function(bool)
+		auto_grab_dolce_en = bool
+		grab_things("Dolce Milk")
+	end)
+	
+	local AutoFarmDolceMilk = Tabs.Defense:CreateToggle("AutoFarmDolceMilk_Flag", {Title = "Auto farm dolce milk", Default = false})
+	AutoFarmDolceMilk:OnChanged(function(bool)
+		farm_dolce_en = bool
+		farm_things("Dolce Milk")
+	end)
+	
+	local AntiAFK = Tabs.Defense:CreateToggle("AntiAFK_Flag", {Title = "Anti AFK", Default = false})
+	AntiAFK:OnChanged(function(bool)
+		if bool then
+			anti_afk_en = p.Idled:Connect(function()
+				virtual_user:CaptureController()
+				virtual_user:ClickButton2(Vector2.new())
+			end)
+		else
+			if anti_afk_en ~= nil then
+				anti_afk_en:Disconnect()
+			end
+		end
+	end)
+	
+	-- player tab
+	local WSSlider = Tabs.Character:CreateSlider("WSSlider_Flag", {
+		Title = "Speed",
+		Description = "",
+		Default = plr.Character.Humanoid.WalkSpeed,
+		Min = 0,
+		Max = 200,
+		Rounding = 1,
+		Callback = function(value)
+			update_walk_speed(value)
+		end
+	})
+	
+	local WSInput = Tabs.Character:CreateInput("WSInput_Flag", {
+		Title = "Speed",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			WSSlider:SetValue(value)
+		end
+	})
+	
+	local JPSlider = Tabs.Character:CreateSlider("JPSlider_Flag", {
+		Title = "Jump power",
+		Description = "",
+		Default = plr.Character.Humanoid.JumpPower,
+		Min = 0,
+		Max = 500,
+		Rounding = 1,
+		Callback = function(value)
+			update_jump_power(value)
+		end
+	})
+	
+	local JPInput = Tabs.Character:CreateInput("JPInput_Flag", {
+		Title = "Jump power",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			JPSlider:SetValue(value)
+		end
+	})
+	
+	local inf_jump = Tabs.Character:CreateToggle("inf_jump_Flag", {Title = "Infinite jumps", Default = false})
+	inf_jump:OnChanged(function(bool)
+		inf_jump_en = bool
+		user_input_service.JumpRequest:Connect(function()
+			if inf_jump_en then plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping") end
+		end)
+	end)
+	
+	local GravSlider = Tabs.Character:CreateSlider("GravSlider_Flag", {
+		Title = "Gravity",
+		Description = "",
+		Default = workspace.Gravity,
+		Min = 0,
+		Max = 1000,
+		Rounding = 2,
+		Callback = function(value)
+			update_gravity(value)
+		end
+	})
+	
+	local GravInput = Tabs.Character:CreateInput("GravInput_Flag", {
+		Title = "Set gravity",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			GravSlider:SetValue(value)
+		end
+	})
+	
+	local FOVSlider = Tabs.Character:CreateSlider("FOVSlider_Flag", {
+		Title = "Field of view",
+		Description = "",
+		Default = cam.FieldOfView,
+		Min = 0,
+		Max = 1000,
+		Rounding = 1,
+		Callback = function(value)
+			update_field_of_view(value)
+		end
+	})
+	
+	local FOVInput = Tabs.Character:CreateInput("FOVInput_Flag", {
+		Title = "Jump power",
+		Default = "",
+		Placeholder = "input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			FOVlider:SetValue(value)
+		end
+	})
+	
+	-- script tab
+	Tabs.Scripts:CreateButton{
+		Title = "Infinite Yield REBORN",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kpe02/scripts/refs/heads/main/osk.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "System Broken",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/script"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Dex (PC)",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Dex (Mobile)",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Path & Float",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/ONLY-PC_pathing"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Jerk off R6",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Отдельный chat bypass",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/chat_bypass.lua')()
+		end
+	}
+	
+	-- clocktime tab
+	Tabs.ClockTime:CreateButton{
+		Title = "Night",
+		Description = "",
+		Callback = function()
+			update_clocktime(0)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Day",
+		Description = "",
+		Callback = function()
+			update_clocktime(10)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Evening",
+		Description = "",
+		Callback = function()
+			update_clocktime(18)
+		end
+	}
+	
+	Tabs.ClockTime:CreateButton{
+		Title = "Morning",
+		Description = "",
+		Callback = function()
+			update_clocktime(6)
+		end
+	}
+	
+	local ClockTimeInput = Tabs.ClockTime:CreateInput("ClockTimeInput_Flag", {
+		Title = "Custom clock time",
+		Default = "10",
+		Placeholder = "Input",
+		Numeric = true,
+		Finished = true,
+		Callback = function(value)
+			update_clocktime(value)
+		end
+	})
+	
+	-- loaded
+	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
+	print"[LadderBreaker]: Loaded"
 end
 
 -- start ladder breaker
