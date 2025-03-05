@@ -1170,6 +1170,11 @@ local function load_dmo()
 			update_clocktime(value)
 		end
 	})
+
+	local ChangelogParagraphV6 = Tabs.Changelog:CreateParagraph("Paragraph", {
+	    Title = "v6",
+	    Content = ""
+	})
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
