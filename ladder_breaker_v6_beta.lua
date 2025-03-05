@@ -8,7 +8,6 @@ local premium_user = false
 -- script
 local plrs = game.Players
 local plr = plrs.LocalPlayer
-local plrUserId = plr.UserId
 local cam = workspace.Camera
 local starter_gui = game:GetService"StarterGui"
 local run_service = game:GetService"RunService"
@@ -27,7 +26,6 @@ local seconds_of_executed_ladderbreaker = 0
 local minutes_of_executed_ladderbreaker = 0
 local saved_position = nil 
 local message_repeats = 3
-local osk = 1
 local old_position
 local saved_checkpoint
 
@@ -957,7 +955,7 @@ local function load_dmo()
 		Title = "Infinite Yield REBORN",
 		Description = "",
 		Callback = function()
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kpe02/scripts/refs/heads/main/osk.lua"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alajayid/infiniteyield-reborn-reborn/master/source"))()
 		end
 	}
 	
@@ -1514,7 +1512,7 @@ local function load_premium()
 		Title = "Infinite Yield REBORN",
 		Description = "",
 		Callback = function()
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/m1kpe02/scripts/refs/heads/main/osk.lua"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alajayid/infiniteyield-reborn-reborn/master/source"))()
 		end
 	}
 	
