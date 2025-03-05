@@ -1346,11 +1346,16 @@ local function load_premium()
 		anti_sit()
 	end)
 	
-	local AntiKillParts = Tabs.Defense:CreateToggle("AntiKillParts_Flag", {Title = "Anti kill parts", Default = false})
+	local AntiKillParts = Tabs.Defense:CreateToggle("AntiKillParts_Flag", {Title = "Anti kill/kick parts", Default = false})
 	AntiKillParts:OnChanged(function(bool)
 		pcall(function()
 			for i, part in pairs(workspace.Damage:GetChildren()) do
 				if part:IsA("Part") then
+					if bool then part.CanTouch = false else part.CanTouch = true end
+				end
+			end
+			for i, part in pairs(workspace:GetDescendants()) do
+				if part:IsA("Part") and part.Name == "TeleportPart" then
 					if bool then part.CanTouch = false else part.CanTouch = true end
 				end
 			end
@@ -1370,7 +1375,7 @@ local function load_premium()
 			if bang_defense == "Kick" then
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				workspace:GetChildren()[19].Part.TeleportPart.CanTouch = false
-				for i = 1, 3 do
+				for i = 1, 5 do
 					task.wait(0.2)
 					tp(CFrame.new(-245.082535, 265.335266, -2826.54883, -0.985214949, 3.41150885e-09, -0.171322852, -1.9914264e-08, 1, 1.34432383e-07, 0.171322852, 1.35856567e-07, -0.985214949))
 				end
@@ -1378,7 +1383,8 @@ local function load_premium()
 			else
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				workspace.Damage["70"].CanTouch = false
-				for i = 1, 3 do
+				task.wait(0.1)
+				for i = 1, 5 do
 					task.wait(0.2)
 					tp(CFrame.new(65.8883896, 95.9391251, -407.936798, 0.99227649, -5.69515706e-08, 0.124046057, 5.96924039e-08, 1, -1.83786479e-08, -0.124046057, 2.56413077e-08, 0.99227649))
 				end
