@@ -41,6 +41,7 @@ local anti_void_en = false
 local anti_sit_en = false
 local auto_drop_dolce_en = false
 local auto_grab_dolce_en = false
+local auto_hide_dolce_en = false
 local farm_dolce_en = false
 local dolce_dick_en = false
 local loop_speed_en = false
@@ -532,7 +533,6 @@ local function grab_things(thing)
 end
 
 local function farm_things(thing)
-
 	while farm_dolce_en do
 		task.wait()
 		if plr.Character and plr.Character:WaitForChild("Humanoid").Health ~= 0 and farm_dolce_en then
@@ -543,6 +543,17 @@ local function farm_things(thing)
 			plr.Character:WaitForChild("Humanoid").Health = 0
 		end
 		task.wait()
+	end
+end
+
+local function hide_things(thing)
+	while auto_hide_dolce_en do
+		task.wait(0.3)
+		for i, d in pairs(plr.Character:GetChildren()) do
+			if d.Name == thing and auto_hide_dolce_en then 
+				if plr.Character.Humanoid.Health ~= 0 then d.Parent = plr.Backpack end
+			end
+		end
 	end
 end
 
@@ -930,6 +941,12 @@ local function load_dmo()
 	AutoGrabDolceMilk:OnChanged(function(bool)
 		auto_grab_dolce_en = bool
 		grab_things("Dolce Milk")
+	end)
+	
+	local AutoHideDolceMilk = Tabs.Defense:CreateToggle("AutoHideDolceMilk_Flag", {Title = "Auto hide dolce milk", Default = false})
+	AutoHideDolceMilk:OnChanged(function(bool)
+		auto_hide_dolce_en = bool
+		hide_things("Dolce Milk")
 	end)
 	
 	local AutoFarmDolceMilk = Tabs.Defense:CreateToggle("AutoFarmDolceMilk_Flag", {Title = "Auto farm dolce milk", Default = false})
@@ -1446,6 +1463,12 @@ local function load_premium()
 	AutoGrabDolceMilk:OnChanged(function(bool)
 		auto_grab_dolce_en = bool
 		grab_things("Dolce Milk")
+	end)
+	
+	local AutoHideDolceMilk = Tabs.Defense:CreateToggle("AutoHideDolceMilk_Flag", {Title = "Auto hide dolce milk", Default = false})
+	AutoHideDolceMilk:OnChanged(function(bool)
+		auto_hide_dolce_en = bool
+		hide_things("Dolce Milk")
 	end)
 	
 	local AutoFarmDolceMilk = Tabs.Defense:CreateToggle("AutoFarmDolceMilk_Flag", {Title = "Auto farm dolce milk", Default = false})
