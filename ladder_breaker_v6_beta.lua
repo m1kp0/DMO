@@ -735,7 +735,7 @@ local function load_dmo()
 		Character = Window:CreateTab{Title = "Player", Icon = "user-cog"},
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
-		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
+		Changelog = Window:CreateTab{Title = "Changelog sex", Icon = "mail-plus"},
 		Server = Window:CreateTab{Title = "Server", Icon = "server"}
 	}
 	
@@ -1171,7 +1171,7 @@ local function load_dmo()
 
 	local ChangelogParagraphV6 = Tabs.Changelog:CreateParagraph("Paragraph", {
 	    Title = "v6",
-	    Content = ""
+	    Content = "Added:\n"
 	})
 	
 	-- loaded
