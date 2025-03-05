@@ -1,28 +1,25 @@
 print"[LadderBreaker]: Starting"
-
-local bindable_function = Instance.new("BindableFunction")
-
+local bindable_function = Instance.new"BindableFunction"
 bindable_function.OnInvoke = function(button)
 	if button == "Why?" then
 		game.StarterGui:SetCore("SendNotification", {
 			Title = "Libraries",
 			Text = "Fluent and Rayfield UIs are hard to load",
 			Duration = 10,
-			Button1 = "Ok",
+			Button1 = "Ok"
 		})
 	end
 end
-
 game.StarterGui:SetCore("SendNotification", {
     Title = "Loading LadderBreaker",
     Text = "It may take 15-20 seconds",
     Duration = 10,
-    Callback = bindable_function,
+	Callback = bindable_function,
     Button1 = "Ok",
-    Button2 = "Why?",
+    Button2 = "Why?"
 })
 
--- premium
+-- premium info
 local name = game.Players.LocalPlayer.Name
 local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"}
 local premium_user = false
@@ -85,7 +82,7 @@ _G.chatSpyInstance = instance
 print"[LadderBreaker]: Loading UI-Libraries (it may take 10-20 seconds)"
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 print"[LadderBreaker]: Loaded UI-Library: Fluent"
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 print"[LadderBreaker]: Loaded UI-Library: Rayfield"
 
 -- chat spy
@@ -341,7 +338,7 @@ end
 
 local function anti_void() 
 	if anti_void_en then
-		pcall(funtion()
+		pcall(function()
 			workspace.FallenPartsDestroyHeight = -math.huge
 			while anti_void_en do
 				if plr.Character and plr.Character.Humanoid.Health > 0 then
