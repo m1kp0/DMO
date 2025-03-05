@@ -437,7 +437,7 @@ end
 
 local function anti_spy() 
 	while anti_spy_en do
-		invis_chat("["..name.."]: ANTI CHAT SPY")
+		invis_chat("ANTI CHAT SPY")
 		task.wait(0.1)
 	end
 end
@@ -1171,7 +1171,7 @@ local function load_dmo()
 
 	local ChangelogParagraphV6 = Tabs.Changelog:CreateParagraph("Paragraph", {
 	    Title = "v6",
-	    Content = "Added:\n"
+	    Content = "Added:\n auto hide dolce milk,\nauto farm dolce milk;\nRewrited:\nLadderBreaker script"
 	})
 	
 	-- loaded
