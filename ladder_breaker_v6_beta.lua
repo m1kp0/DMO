@@ -47,6 +47,7 @@ local saved_position = nil
 local message_repeats = 3
 local old_position
 local saved_checkpoint
+local volume = 0.5
 
 -- toggle(bool) variables
 local break_ladder_en = false
@@ -64,6 +65,7 @@ local dolce_dick_en = false
 local loop_speed_en = false
 local inf_jump_en = false
 local anti_afk_en = nil
+local loop_music_en = false
 
 -- chat spy variables
 local instance = (_G.chatSpyInstance or 0) + 1
@@ -632,7 +634,8 @@ local function load_dmo()
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
 		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
-		Server = Window:CreateTab{Title = "Server", Icon = "server"}
+		Server = Window:CreateTab{Title = "Server", Icon = "server"},
+		Music = Window:CreateTab{Title = "Custom track", Icon = "music"}
 	}
 	
 	-- main tab
@@ -1104,7 +1107,8 @@ local function load_premium()
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
 		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
-		Server = Window:CreateTab{Title = "Server", Icon = "server"}
+		Server = Window:CreateTab{Title = "Server", Icon = "server"},
+		Music = Window:CreateTab{Title = "Custom track", Icon = "music"}
 	}
 	
 	-- main tab
@@ -1628,6 +1632,14 @@ local function load_premium()
 			update_clocktime(value)
 		end
 	})
+
+	local LoopMusic = Tabs.Music:CreateToggle("LoopMusic_Flag", {Title = "Play (неработает)", Default = false})
+	LoopMusic:OnChanged(function(bool)
+		loop_music_en = bool
+	        while loop_music_en do
+	                 task.wait()
+		end
+	end)
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
