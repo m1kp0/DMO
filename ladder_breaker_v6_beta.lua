@@ -1,22 +1,10 @@
 print"[LadderBreaker]: Starting"
-local bindable_function = Instance.new"BindableFunction"
-bindable_function.OnInvoke = function(button)
-	if button == "Why?" then
-		game.StarterGui:SetCore("SendNotification", {
-			Title = "Libraries",
-			Text = "Fluent and Rayfield UIs are hard to load",
-			Duration = 10,
-			Button1 = "Ok"
-		})
-	end
-end
 game.StarterGui:SetCore("SendNotification", {
     Title = "Loading LadderBreaker",
     Text = "It may take 15-20 seconds",
-    Duration = 10,
+    Duration = math.huge,
 	Callback = bindable_function,
-    Button1 = "Ok",
-    Button2 = "Why?"
+    Button1 = "Ok"
 })
 
 -- premium info
@@ -47,7 +35,7 @@ local saved_position = nil
 local message_repeats = 3
 local old_position
 local saved_checkpoint
-local volume = 0.5
+local bang_defense = "Kill"
 
 -- toggle(bool) variables
 local break_ladder_en = false
@@ -57,15 +45,16 @@ local anti_spy_en = false
 local my_ladder_en = false
 local anti_void_en = false
 local anti_sit_en = false
-local auto_drop_dolce_en = false
-local auto_grab_dolce_en = false
+local auto_drop_dolce_optimal_en = false
+local auto_drop_dolce_fast_en = false
+local auto_grab_dolce_fast_en = false
+local auto_grab_dolce_optimal_en = false
 local auto_hide_dolce_en = false
 local farm_dolce_en = false
 local dolce_dick_en = false
 local loop_speed_en = false
 local inf_jump_en = false
 local anti_afk_en = nil
-local loop_music_en = false
 
 -- chat spy variables
 local instance = (_G.chatSpyInstance or 0) + 1
@@ -86,10 +75,8 @@ local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOog
 print"[LadderBreaker]: Loaded UI-Library: Fluent"
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 print"[LadderBreaker]: Loaded UI-Library: Rayfield"
-
--- chat spy
 print"[LadderBreaker]: Loading functions"
-
+-- chat spy
 local function onChatted(p, msg)
 	if _G.chatSpyInstance == instance then
 		if p==player and msg:lower():sub(1,4)=="/spy" then
@@ -136,6 +123,7 @@ local function tp(cframe) plr.Character.HumanoidRootPart.CFrame = cframe end
 
 -- clocktime function
 local function update_clocktime(time) game.Lighting.ClockTime = time end
+
 -- notify function
 local function notify(title, content, dur, subcontent)
 	Library:Notify{
@@ -211,11 +199,12 @@ local function load_chat_functions()
 	})
 
 	local Main = Window:CreateTab("Main", 4483362458)
+	local Songs = Window:CreateTab("Chat songs", 16898613777)
 
-	local Bypass = Main:CreateSection("Bypass")
+	local Bypass = Main:CreateSection("Bypass (ненадо материться)")
 
 	local ToggleBypass = Main:CreateToggle({
-		Name = "Chat bypass",
+		Name = "Chat bypass (ненадо материться пожалуста)",
 		CurrentValue = false,
 		Flag = "BypassToggleFlag",
 		Callback = function(bool)
@@ -224,7 +213,7 @@ local function load_chat_functions()
 	})
 
 	local InputChat = Main:CreateInput({
-		Name = "Chat",
+		Name = "Chat (не материтесь пж)",
 		PlaceholderText = "Input",
 		RemoveTextAfterFocusLost = true,
 		Callback = function(input)
@@ -326,14 +315,18 @@ local function anti_blur()
 end
 
 local function anti_sit()
-	plr.Character.Humanoid.Seated:Connect(function()
-		if anti_sit_en then plr.Character.Humanoid.Sit = false end
+	pcall(function()
+		if plr.Character and plr.Character.Humanoid.Health > 0 and anti_sit_en then
+			plr.Character.Humanoid.Seated:Connect(function()
+				if anti_sit_en then plr.Character.Humanoid.Sit = false end
+			end)
+		end
 	end)
 end
 
 local function anti_spy() 
 	while anti_spy_en do
-		invis_chat("["..name.."]: ANTI CHAT SPY")
+		plrs:Chat("["..plr.DisplayName.."]: ANTI CHAT SPY")
 		task.wait(0.1)
 	end
 end
@@ -345,7 +338,7 @@ local function anti_void()
 			while anti_void_en do
 				if plr.Character and plr.Character.Humanoid.Health > 0 then
 					if plr.Character.HumanoidRootPart and plr.Character.HumanoidRootPart.Position.Y < -500 and anti_void_en then
-						tp(CFrame.new(80, 147, -247))
+						tp(CFrame.new(80, 149, -247))
 						task.wait()
 						notify("Theres a staarmaan waiting in the sky", "I will save you next time <3", 3)
 					end
@@ -380,49 +373,52 @@ local function checkpoint(save_or_delete)
 		saved_checkpoint = plr.Character.HumanoidRootPart.CFrame
 		plr.CharacterAdded:Connect(function()
 			task.wait(0.2)
-			tp(CFrame.new(saved_checkpoint))
+			if saved_checkpoint ~= nil then
+				tp(CFrame.new(saved_checkpoint))
+			end
 		end)
-	elseif save_or_delete == "delete" then
+	else
 		saved_checkpoint = nil
 	end
 end
 
-local function drop_things(thing)
-	for i, tool in pairs(plr.Backpack:GetChildren()) do
-		if tool.Parent == plr.Backpack then
-			tool.Parent = plr.Character
-			task.wait()
-			tool.Parent = workspace
-		end
-		if tool.Parent == plr.Character then
-			tool.Parent = workspace
-			task.wait()
-		end
+local function drop_things_optimized(thing)
+	if plr.Backpack:FindFirstChild(thing) then
+		plr.Backpack:FindFirstChild(thing).Parent = plr.character
+	end
+	task.wait()
+	if plr.Character:FindFirstChild(thing) then
+		plr.Character:FindFirstChild(thing).Parent = workspace
 	end
 end
 
-local function auto_drop_things(thing)
-	for i, tool in pairs(plr.Backpack:GetChildren()) do
-		if plr.Character.Humanoid.Health ~= 0 then
-			if tool.Parent == plr.Backpack and auto_drop_dolce_en then
-				tool.Parent = plr.Character
-				task.wait()
-				tool.Parent = workspace
-			end
-			if tool.Parent == plr.Character and auto_drop_dolce_en then
-				tool.Parent = workspace
-				task.wait()
-			end
+local function drop_things_fast(thing)
+	for i, v in pairs(plr.Backpack:GetChildren()) do
+		if #plr.Backpack:GetChildren() ~= 0 then
+			if v.Name == thing then v.Parent = plr.Character end
 		end
+	end
+	task.wait()
+	for i, v in pairs(plr.Character:GetChildren()) do
+		if v.Name == thing then v.Parent = workspace end
 	end
 end
 
-local function grab_things(thing)
-	while run_service.RenderStepped:Wait() and auto_grab_dolce_en do
+local function grab_things_optimal(thing)
+	while auto_grab_dolce_optimal_en do
 		task.wait()
-		for i, d in pairs(workspace:GetChildren()) do
-			if d.Name == thing and auto_grab_dolce_en then 
-				if plr.Character.Humanoid.Health ~= 0 then d.Handle.CFrame = CFrame.new(plr.Character.RightLowerArm.CFrame.Position + Vector3.new(-1, -1, 0)) end
+		if workspace:FindFirstChild("Dolce Milk") then
+			plr.Character.Humanoid:EquipTool(workspace:FindFirstChild("Dolce Milk"))
+		end
+	end
+end
+
+local function grab_things_fast(thing)
+	while auto_grab_dolce_fast_en do
+		task.wait()
+		for i, v in pairs(workspace:GetChildren()) do
+			if v.Name == thing then
+				plr.Character.Humanoid:EquipTool(v)
 			end
 		end
 	end
@@ -435,7 +431,7 @@ local function farm_things(thing)
 			task.wait(0.2)
 			tp(CFrame.new(-241, 265, -2804))
 			task.wait(0.2)
-			for i, tool in pairs(plr.Backpack:GetChildren()) do drop_things("Dolce Milk") end
+			for i, tool in pairs(plr.Backpack:GetChildren()) do drop_things_fast("Dolce Milk") end
 			plr.Character:WaitForChild("Humanoid").Health = 0
 		end
 		task.wait()
@@ -634,8 +630,7 @@ local function load_dmo()
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
 		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
-		Server = Window:CreateTab{Title = "Server", Icon = "server"},
-		Music = Window:CreateTab{Title = "Custom track", Icon = "music"}
+		Server = Window:CreateTab{Title = "Server", Icon = "server"}
 	}
 	
 	-- main tab
@@ -817,26 +812,41 @@ local function load_dmo()
 	}
 	
 	Tabs.Defense:CreateButton{
-		Title = "Drop dolce milks",
+		Title = "Drop dolce milk",
 		Description = "",
 		Callback = function()
-			drop_things("Dolce Milk")
+			drop_things_fast("Dolce Milk")
 		end
 	}
 	
-	local AutoDropDolceMilk = Tabs.Defense:CreateToggle("AutoDropDolceMilk_Flag", {Title = "Auto drop dolce milk", Default = false})
-	AutoDropDolceMilk:OnChanged(function(bool)
-		auto_drop_dolce_en = bool
-		while auto_drop_dolce_en do
-			drop_things("Dolce Milk")
-			task.wait(0.01)
+	local AutoDropDolceMilkFast = Tabs.Defense:CreateToggle("AutoDropDolceMilkFast_Flag", {Title = "Auto drop dolce milk (fast, laggy)", Default = false})
+	AutoDropDolceMilkFast:OnChanged(function(bool)
+		auto_drop_dolce_fast_en = bool
+		while auto_drop_dolce_fast_en do
+			drop_things_fast("Dolce Milk")
+			task.wait()
+		end
+	end)
+
+	local AutoDropDolceMilkOptimal = Tabs.Defense:CreateToggle("AutoDropDolceMilkOptimal_Flag", {Title = "Auto drop dolce milk (optimal)", Default = false})
+	AutoDropDolceMilkOptimal:OnChanged(function(bool)
+		auto_drop_dolce_optimal_en = bool
+		while auto_drop_dolce_optimal_en do
+			drop_things_optimized("Dolce Milk")
+			task.wait()
 		end
 	end)
 	
-	local AutoGrabDolceMilk = Tabs.Defense:CreateToggle("AutoGrabDolceMilk_Flag", {Title = "Auto grab dolce milk", Default = false})
-	AutoGrabDolceMilk:OnChanged(function(bool)
-		auto_grab_dolce_en = bool
-		grab_things("Dolce Milk")
+	local AutoGrabDolceMilkFast = Tabs.Defense:CreateToggle("AutoGrabDolceMilkFast_Flag", {Title = "Auto grab dolce milk (fast, laggy)", Default = false})
+	AutoGrabDolceMilkFast:OnChanged(function(bool)
+		auto_grab_dolce_fast_en = bool
+		grab_things_fast("Dolce Milk")
+	end)
+
+	local AutoGrabDolceMilkOptimal = Tabs.Defense:CreateToggle("AutoGrabDolceMilkOptimal_Flag", {Title = "Auto grab dolce milk (optimal)", Default = false})
+	AutoGrabDolceMilkOptimal:OnChanged(function(bool)
+		auto_grab_dolce_optimal_en = bool
+		grab_things_optimal("Dolce Milk")
 	end)
 	
 	local AutoHideDolceMilk = Tabs.Defense:CreateToggle("AutoHideDolceMilk_Flag", {Title = "Auto hide dolce milk", Default = false})
@@ -922,10 +932,7 @@ local function load_dmo()
 	
 	local platformStand = Tabs.Character:CreateToggle("platformStand_Flag", {Title = "platform stand", Default = false})
 	platformStand:OnChanged(function(bool)
-		platform_stand_en = bool
-		user_input_service.JumpRequest:Connect(function()
-			if platform_stand then plr.Character.Humanoid.PlatformStand = true else plr.Character.Humanoid.PlatformStand = false end
-		end)
+		plr.Character.Humanoid.PlatformStand = bool
 	end)
 	
 	local GravSlider = Tabs.Character:CreateSlider("GravSlider_Flag", {
@@ -955,8 +962,8 @@ local function load_dmo()
 		Title = "Field of view",
 		Description = "",
 		Default = cam.FieldOfView,
-		Min = 0,
-		Max = 1000,
+		Min = 1,
+		Max = 120,
 		Rounding = 1,
 		Callback = function(value)
 			update_field_of_view(value)
@@ -964,13 +971,13 @@ local function load_dmo()
 	})
 	
 	local FOVInput = Tabs.Character:CreateInput("FOVInput_Flag", {
-		Title = "Jump power",
+		Title = "Set field of view",
 		Default = "",
 		Placeholder = "input",
 		Numeric = true,
 		Finished = true,
 		Callback = function(value)
-			FOVlider:SetValue(value)
+			FOVSlider:SetValue(value)
 		end
 	})
 	
@@ -1024,10 +1031,26 @@ local function load_dmo()
 	}
 	
 	Tabs.Scripts:CreateButton{
+		Title = "Jerk off R15",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
 		Title = "Отдельный chat bypass",
 		Description = "",
 		Callback = function()
 			loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/chat_bypass.lua')()
+		end
+	}
+	
+	Tabs.Scripts:CreateButton{
+		Title = "Mobile keyboard",
+		Description = "",
+		Callback = function()
+			loadstring(game:HttpGet("https://gist.githubusercontent.com/RedZenXYZ/4d80bfd70ee27000660e4bfa7509c667/raw/da903c570249ab3c0c1a74f3467260972c3d87e6/KeyBoard%2520From%2520Ohio%2520Fr%2520Fr"))()
 		end
 	}
 	
@@ -1075,6 +1098,23 @@ local function load_dmo()
 		end
 	})
 	
+	local ParagraphV6 = Tabs.Changelog:CreateParagraph("V6", {
+		Title = "V6 beta changelog",
+		Content = "Added:\nFluent ui library (interface),\nauto farm dolce milk,\nauto hide dolce milk,\nauto drop dolce milk (optimal),\nauto drop dolce milk (fast, laggy),\nauto grab dolce milk (optimal),\nauto grab dolce milk (fast, laggy);\nRemoved:\n old ui library;\nm1kp's note:\nXeno юзеры, люблю вас!"
+	})
+	
+	local ParagraphV6whybeta = Tabs.Changelog:CreateParagraph("V6_why_beta", {
+		Title = "-почему бета?",
+		Content = "-я еще не доделал скрипт"
+	})
+	
+	local ParagraphV6 = Tabs.Server:CreateParagraph("V6", {
+		Title = "я скоро добавлю это",
+		Content = "а пока что, мне лень",
+		TitleAlignment = "Middle",
+		ContentAlignment = Enum.TextXAlignment.Center
+	})
+	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
 	print"[LadderBreaker]: Loaded"
@@ -1107,8 +1147,7 @@ local function load_premium()
 		Scripts = Window:CreateTab{Title = "Scripts", Icon = "code-xml"},
 		ClockTime = Window:CreateTab{Title = "Clock time", Icon = "sun"},
 		Changelog = Window:CreateTab{Title = "Changelog", Icon = "mail-plus"},
-		Server = Window:CreateTab{Title = "Server", Icon = "server"},
-		Music = Window:CreateTab{Title = "Custom track", Icon = "music"}
+		Server = Window:CreateTab{Title = "Server", Icon = "server"}
 	}
 	
 	-- main tab
@@ -1285,7 +1324,7 @@ local function load_premium()
 					end
 				end
 				for i = 1, 5 do
-					task.wait(0.5)
+					task.wait(0.2)
 					tp(CFrame.new(-245.082535, 265.335266, -2826.54883, -0.985214949, 3.41150885e-09, -0.171322852, -1.9914264e-08, 1, 1.34432383e-07, 0.171322852, 1.35856567e-07, -0.985214949))
 				end
 				tp(old_position)
@@ -1298,7 +1337,7 @@ local function load_premium()
 				end
 				task.wait(0.1)
 				for i = 1, 5 do
-					task.wait(0.5)
+					task.wait(0.2)
 					tp(CFrame.new(65.8883896, 95.9391251, -407.936798, 0.99227649, -5.69515706e-08, 0.124046057, 5.96924039e-08, 1, -1.83786479e-08, -0.124046057, 2.56413077e-08, 0.99227649))
 				end
 				task.wait(0.1)
@@ -1311,20 +1350,7 @@ local function load_premium()
 		Title = "Kill/Kick facebang",
 		Description = "",
 		Callback = function()
-			if bang_defense == "Kick" then
-				local old_position = plr.Character.HumanoidRootPart.CFrame
-				for i, part in pairs(workspace:GetDescendants()) do
-					if part:IsA("Part") and part.Name == "TeleportPart" then
-						part.CanTouch = false
-					end
-				end
-				for i = 1, 3 do
-					task.wait(0.5)
-					tp(CFrame.new(-244.424606, 265.321747, -2826.51587, 0.981782734, 2.22285195e-08, 0.190007031, -4.74679318e-08, 1, 1.2828302e-07, -0.190007031, -1.3496529e-07, 0.981782734))
-				end
-				task.wait(0.1)
-				tp(old_position)
-			else
+			if bang_defense == "Kill" then
 				local old_position = plr.Character.HumanoidRootPart.CFrame
 				for i, part in pairs(workspace.Damage:GetChildren()) do
 					if part:IsA("Part") then
@@ -1332,8 +1358,21 @@ local function load_premium()
 					end
 				end
 				for i = 1, 3 do
-					task.wait(0.5)
+					task.wait(0.2)
 					tp(CFrame.new(65.9753799, 90.9765091, -407.554199, -0.998261631, -0.00710663432, -0.0585079715, 7.12106774e-09, 0.992703795, -0.120578274, 0.0589379929, -0.120368667, -0.990978181))
+				end
+				task.wait(0.1)
+				tp(old_position)
+			elseif bang_defense == "Kick" then
+				local old_position = plr.Character.HumanoidRootPart.CFrame
+				for i, part in pairs(workspace:GetDescendants()) do
+					if part:IsA("Part") and part.Name == "TeleportPart" then
+						part.CanTouch = false
+					end
+				end
+				for i = 1, 3 do
+					task.wait(0.2)
+					tp(CFrame.new(-244.424606, 265.321747, -2826.51587, 0.981782734, 2.22285195e-08, 0.190007031, -4.74679318e-08, 1, 1.2828302e-07, -0.190007031, -1.3496529e-07, 0.981782734))
 				end
 				task.wait(0.1)
 				tp(old_position)
@@ -1349,7 +1388,7 @@ local function load_premium()
 	})
 	
 	BangDefenseDrop:OnChanged(function(value)
-		local bang_defense = value
+		bang_defense = value
 	end)
 	
 	local CreateMyLadder = Tabs.Defense:CreateToggle("CreateMyLadder_Flag", {Title = "Create my ladder", Default = false})
@@ -1378,23 +1417,38 @@ local function load_premium()
 		Title = "Drop dolce milks",
 		Description = "",
 		Callback = function()
-			drop_things("Dolce Milk")
+			drop_things_fast("Dolce Milk")
 		end
 	}
 	
-	local AutoDropDolceMilk = Tabs.Defense:CreateToggle("AutoDropDolceMilk_Flag", {Title = "Auto drop dolce milk", Default = false})
-	AutoDropDolceMilk:OnChanged(function(bool)
-		auto_drop_dolce_en = bool
-		while auto_drop_dolce_en do
-			drop_things("Dolce Milk")
-			task.wait(0.01)
+	local AutoDropDolceMilkFast = Tabs.Defense:CreateToggle("AutoDropDolceMilkFast_Flag", {Title = "Auto drop dolce milk (fast, laggy)", Default = false})
+	AutoDropDolceMilkFast:OnChanged(function(bool)
+		auto_drop_dolce_fast_en = bool
+		while auto_drop_dolce_fast_en do
+			drop_things_fast("Dolce Milk")
+			task.wait()
 		end
 	end)
 	
-	local AutoGrabDolceMilk = Tabs.Defense:CreateToggle("AutoGrabDolceMilk_Flag", {Title = "Auto grab dolce milk", Default = false})
-	AutoGrabDolceMilk:OnChanged(function(bool)
-		auto_grab_dolce_en = bool
-		grab_things("Dolce Milk")
+	local AutoDropDolceMilkOptimal = Tabs.Defense:CreateToggle("AutoDropDolceMilkOptimal_Flag", {Title = "Auto drop dolce milk (optimal)", Default = false})
+	AutoDropDolceMilkOptimal:OnChanged(function(bool)
+		auto_drop_dolce_optimal_en = bool
+		while auto_drop_dolce_optimal_en do
+			drop_things_optimized("Dolce Milk")
+			task.wait()
+		end
+	end)
+	
+	local AutoGrabDolceMilkFast = Tabs.Defense:CreateToggle("AutoGrabDolceMilkFast_Flag", {Title = "Auto grab dolce milk (fast, laggy)", Default = false})
+	AutoGrabDolceMilkFast:OnChanged(function(bool)
+		auto_grab_dolce_fast_en = bool
+		grab_things_fast("Dolce Milk")
+	end)
+	
+	local AutoGrabDolceMilkOptimal = Tabs.Defense:CreateToggle("AutoGrabDolceMilkOptimal_Flag", {Title = "Auto grab dolce milk (optimal)", Default = false})
+	AutoGrabDolceMilkOptimal:OnChanged(function(bool)
+		auto_grab_dolce_optimal_en = bool
+		grab_things_optimal("Dolce Milk")
 	end)
 	
 	local AutoHideDolceMilk = Tabs.Defense:CreateToggle("AutoHideDolceMilk_Flag", {Title = "Auto hide dolce milk", Default = false})
@@ -1480,10 +1534,7 @@ local function load_premium()
 	
 	local platformStand = Tabs.Character:CreateToggle("platformStand_Flag", {Title = "platform stand", Default = false})
 	platformStand:OnChanged(function(bool)
-		platform_stand_en = bool
-		user_input_service.JumpRequest:Connect(function()
-			if platform_stand then plr.Character.Humanoid.PlatformStand = true else plr.Character.Humanoid.PlatformStand = false end
-		end)
+		plr.Character.Humanoid.PlatformStand = bool
 	end)
 	
 	local GravSlider = Tabs.Character:CreateSlider("GravSlider_Flag", {
@@ -1513,8 +1564,8 @@ local function load_premium()
 		Title = "Field of view",
 		Description = "",
 		Default = cam.FieldOfView,
-		Min = 0,
-		Max = 1000,
+		Min = 1,
+		Max = 120,
 		Rounding = 1,
 		Callback = function(value)
 			update_field_of_view(value)
@@ -1522,13 +1573,13 @@ local function load_premium()
 	})
 	
 	local FOVInput = Tabs.Character:CreateInput("FOVInput_Flag", {
-		Title = "Jump power",
+		Title = "Set field of view",
 		Default = "",
 		Placeholder = "input",
 		Numeric = true,
 		Finished = true,
 		Callback = function(value)
-			FOVlider:SetValue(value)
+			FOVSlider:SetValue(value)
 		end
 	})
 	
@@ -1632,14 +1683,6 @@ local function load_premium()
 			update_clocktime(value)
 		end
 	})
-
-	local LoopMusic = Tabs.Music:CreateToggle("LoopMusic_Flag", {Title = "Play (неработает)", Default = false})
-	LoopMusic:OnChanged(function(bool)
-		loop_music_en = bool
-	        while loop_music_en do
-	                 task.wait()
-		end
-	end)
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
