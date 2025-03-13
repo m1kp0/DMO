@@ -14,6 +14,7 @@ local premium_user = false
 
 -- script
 local plrs = game.Players
+local gplrs = plrs:GetPlayers()
 local plr = plrs.LocalPlayer
 local cam = workspace.Camera
 local starter_gui = game:GetService"StarterGui"
@@ -27,8 +28,8 @@ local get_msg = replicated_storage:WaitForChild"DefaultChatSystemChatEvents":Wai
 
 -- int variables
 local ver = "6"
-local amount_of_plrs
-local all_plrs
+local amount_of_plrs = #gplrs
+local all_plrs = #gplrs
 local seconds_of_executed_ladderbreaker = 0
 local minutes_of_executed_ladderbreaker = 0
 local saved_position = nil 
@@ -139,16 +140,16 @@ local function load_chat_functions()
 	-- script variables
 	local replicated_storage = game:GetService"ReplicatedStorage"
 	local msg_request = replicated_storage.DefaultChatSystemChatEvents.SayMessageRequest
-
+	
 	-- value
 	local s = nil -- spam/raid msg/symbol
 	local spam_delay = 2.5
-
+	
 	-- functions
 	local function invis_chat(e)
 		plrs:Chat(e)
 	end
-
+	
 	local function bypass_chat()
 		invis_chat("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
 		task.wait()
@@ -159,11 +160,11 @@ local function load_chat_functions()
 		invis_chat("le le le le le")
 		task.wait()
 	end
-
+	
 	local function say_msg(msg)
 		msg_request:FireServer(msg, "All")
 	end
-
+	
 	local Window = Rayfield:CreateWindow({
 		Name = "Chat functions",
 		Icon = 0,
@@ -197,21 +198,22 @@ local function load_chat_functions()
 			Key = {"Hello"}
 		}
 	})
-
+	
 	local Main = Window:CreateTab("Main", 4483362458)
-	local Songs = Window:CreateTab("Chat songs", 16898613777)
-
+	
 	local Bypass = Main:CreateSection("Bypass (ненадо материться)")
-
+	
+	local en = false
 	local ToggleBypass = Main:CreateToggle({
 		Name = "Chat bypass (ненадо материться пожалуста)",
 		CurrentValue = false,
 		Flag = "BypassToggleFlag",
 		Callback = function(bool)
-			if bool then repeat bypass_chat() until bool == false end
+			en = bool
+			repeat bypass_chat() until en == false 
 		end,
 	})
-
+	
 	local InputChat = Main:CreateInput({
 		Name = "Chat (не материтесь пж)",
 		PlaceholderText = "Input",
@@ -220,9 +222,9 @@ local function load_chat_functions()
 			say_msg(input)
 		end,
 	})
-
+	
 	local Raid = Main:CreateSection("Raid")
-
+	
 	local bool1, bool2
 	local ToggleRaid = Main:CreateToggle({
 		Name = "Chat raid",
@@ -238,7 +240,7 @@ local function load_chat_functions()
 			end
 		end,
 	})
-
+	
 	local MySpamToggle = Main:CreateToggle({
 		Name = "My spam",
 		CurrentValue = false,
@@ -253,7 +255,7 @@ local function load_chat_functions()
 			end
 		end,
 	})
-
+	
 	local InputSpamRaid = Main:CreateInput({
 		Name = "Spam/raid message",
 		PlaceholderText = "для рейда один символ пж",
@@ -262,9 +264,9 @@ local function load_chat_functions()
 			s = input
 		end,
 	})
-
+	
 	local InputDelay = Main:CreateInput({
-		Name = "Delay",
+		Name = "Spam delay",
 		PlaceholderText = "Input",
 		RemoveTextAfterFocusLost = true,
 		Callback = function(input)
@@ -1098,22 +1100,47 @@ local function load_dmo()
 		end
 	})
 	
-	local ParagraphV6 = Tabs.Changelog:CreateParagraph("V6", {
+	Tabs.Changelog:CreateParagraph("V6", {
 		Title = "V6 beta changelog",
 		Content = "Added:\nFluent ui library (interface),\nauto farm dolce milk,\nauto hide dolce milk,\nauto drop dolce milk (optimal),\nauto drop dolce milk (fast, laggy),\nauto grab dolce milk (optimal),\nauto grab dolce milk (fast, laggy);\nRemoved:\n old ui library;\nm1kp's note:\nXeno юзеры, люблю вас!"
 	})
 	
-	local ParagraphV6whybeta = Tabs.Changelog:CreateParagraph("V6_why_beta", {
-		Title = "-почему бета?",
-		Content = "-я еще не доделал скрипт"
-	})
-	
-	local ParagraphV6 = Tabs.Server:CreateParagraph("V6", {
-		Title = "я скоро добавлю это",
-		Content = "а пока что, мне лень",
+	Tabs.Server:CreateParagraph("Your", {
+		Title = "You",
+		Content = ""..plr.DisplayName.." ("..plr.Name..")",
 		TitleAlignment = "Middle",
 		ContentAlignment = Enum.TextXAlignment.Center
 	})
+	
+	local plrspar = Tabs.Server:CreateParagraph("Players", {
+		Title = "Players (max. 50)",
+		Content = "Current players: "..amount_of_plrs.."\nAll players: "..all_plrs..""
+	})
+	
+	local musc = Tabs.Server:CreateToggle("musc_Flag", {Title = "Play", Default = false})
+	musc:OnChanged(function(bool)
+		play_music = bool
+		mus = Instance.new"Sound"
+		if play_music then
+			mus.SoundId = "rbxassetid://142376088"
+			mus.Volume = 0.5
+			mus.Looped = true
+			mus:Play()
+		else
+			mus:Stop()
+		end
+	end)
+	
+	plrs.PlayerAdded:Connect(function(p)
+		amount_of_plrs = amount_of_plrs + 1
+		all_plrs = all_plrs + 1
+		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
+	end)
+	
+	plrs.PlayerRemoving:Connect(function(p)
+		amount_of_plrs = amount_of_plrs - 1
+		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
+	end)
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
@@ -1683,6 +1710,32 @@ local function load_premium()
 			update_clocktime(value)
 		end
 	})
+
+	Tabs.Changelog:CreateParagraph("V6", {
+		Title = "Премка ебать",
+		Content = "негры"
+	})
+
+	Tabs.Server:CreateParagraph("Your", {
+		Title = "You",
+		Content = ""..plr.DisplayName.." ("..plr.Name..")"
+	})
+	
+	local plrspar = Tabs.Server:CreateParagraph("Players", {
+		Title = "Players (max. 50)",
+		Content = "Current players: "..amount_of_plrs.."\nAll players: "..all_plrs..""
+	})
+	
+	plrs.PlayerAdded:Connect(function()
+		amount_of_plrs = amount_of_plrs + 1
+		all_plrs = all_plrs + 1
+		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
+	end)
+	
+	plrs.PlayerRemoving:Connect(function()
+		amount_of_plrs = amount_of_plrs - 1
+		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
+	end)
 	
 	-- loaded
 	notify("LadderBreaker loaded completely", "Version: "..ver.."", 5)
