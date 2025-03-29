@@ -9,7 +9,7 @@ game.StarterGui:SetCore("SendNotification", {
 
 -- premium info
 local name = game.Players.LocalPlayer.Name
-local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu", "partyrnak568"}
+local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"}
 local premium_user = false
 
 -- script
@@ -140,7 +140,7 @@ end
 -- chat functions
 local function load_chat_functions()
 	-- script variables
-	local replicated_storage = game:GetService"replicated_storage"
+	local replicated_storage = game:GetService"ReplicatedStorage"
 	local msg_request = say_msg_request
 	
 	-- value
