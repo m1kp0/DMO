@@ -9,7 +9,7 @@ game.StarterGui:SetCore("SendNotification", {
 
 -- premium info
 local name = game.Players.LocalPlayer.Name
-local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu"}
+local premium_users = {"Yaros1979", "abororoumn", "LYBLY_COCATb6969", "poedatelxyevnazavt11", "DragonSosu", "Dimooon7323"}
 local premium_user = false
 
 -- script
@@ -1134,13 +1134,13 @@ local function load_dmo()
 	end)
 	
 	plrs.PlayerAdded:Connect(function(p)
-		amount_of_plrs = amount_of_plrs + 1
+		amount_of_plrs = #plrs:GetPlayers()
 		all_plrs = all_plrs + 1
 		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
 	end)
 	
 	plrs.PlayerRemoving:Connect(function(p)
-		amount_of_plrs = amount_of_plrs - 1
+		amount_of_plrs = #plrs:GetPlayers()
 		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
 	end)
 	
@@ -2542,13 +2542,13 @@ local function load_premium()
 	})
 	
 	plrs.PlayerAdded:Connect(function()
-		amount_of_plrs = amount_of_plrs + 1
+		amount_of_plrs = #plrs:GetPlayers()
 		all_plrs = all_plrs + 1
 		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
 	end)
 	
 	plrs.PlayerRemoving:Connect(function()
-		amount_of_plrs = amount_of_plrs - 1
+		amount_of_plrs = #plrs:GetPlayers()
 		plrspar:SetValue("Current players: "..amount_of_plrs.."\nAll players: "..all_plrs.."")
 	end)
 	
