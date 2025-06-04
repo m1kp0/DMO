@@ -1109,6 +1109,14 @@ Tabs.Scripts:CreateButton{
 	end
 }
 
+Tabs.Scripts:CreateButton{
+	Title = "Fake lagg",
+	Description = "",
+	Callback = function()
+		loadstring(game:HttpGet'https://raw.githubusercontent.com/m1kp0/universal_scripts/refs/heads/main/fake_lagg.lua')()
+	end
+}
+
 -- clocktime tab
 Tabs.ClockTime:CreateButton{
 	Title = "Night",
