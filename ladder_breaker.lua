@@ -1162,8 +1162,8 @@ local ClockTimeInput = Tabs.ClockTime:CreateInput("ClockTimeInput_Flag", {
 })
 
 Tabs.Changelog:CreateParagraph("V6", {
-	Title = "кому не похуй на эту вкладку?",
-	Content = "негры"
+	Title = "V6.2",
+	Content = "Added:\n Fluent UI (interface)\n Optimization\n Auto farm dolce milk\n Auto hide dolce milk\n Auto drop dolce milk (optimal)\n Auto drop dolce milk (fast, laggy)\n Auto grab dolce milk (optimal)\n Auto grab dolce milk (fast, laggy);\nRemoved:\n Old UI (Orion);\nDev's note:\n Xeno юзеры, люблю вас!"
 })
 
 Tabs.Server:CreateParagraph("Your", {
